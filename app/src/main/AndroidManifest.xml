@@ -14,13 +14,23 @@
         android:theme="@style/Theme.ShoeStore"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".information_person"
+            android:exported="false" />
+        <activity
+            android:name=".register_activity"
+            android:exported="false" />
+        <activity
+            android:name=".login_activity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false">
         </activity>
     </application>
 
