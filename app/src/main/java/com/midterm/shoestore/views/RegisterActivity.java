@@ -1,4 +1,4 @@
-package com.midterm.shoestore;
+package com.midterm.shoestore.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,9 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import javax.security.auth.login.LoginException;
+import com.midterm.shoestore.R;
 
-public class register_activity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
     EditText email, pass, repass;
     ImageView btn_reg;
     TextView btn_return_login;
@@ -31,12 +31,12 @@ public class register_activity extends AppCompatActivity {
             public void onClick(View view) {
                 if(email.getText().toString().trim().equals("OK"))
                 {
-                    Intent i = new Intent(register_activity.this, information_person.class);
+                    Intent i = new Intent(RegisterActivity.this, information_person.class);
                     startActivity(i);
                 }
                 else
                 {
-                    Toast.makeText(register_activity.this, "Lỗi roài!!!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Lỗi roài!!!!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -44,7 +44,7 @@ public class register_activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                register_activity.this.finish();
+                RegisterActivity.this.finish();
             }
         });
     }

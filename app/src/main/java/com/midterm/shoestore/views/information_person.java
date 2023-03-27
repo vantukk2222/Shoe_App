@@ -1,4 +1,4 @@
-package com.midterm.shoestore;
+package com.midterm.shoestore.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.midterm.shoestore.R;
 
 public class information_person extends AppCompatActivity {
     TextView txtLeftEdit;

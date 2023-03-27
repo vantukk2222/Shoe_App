@@ -1,4 +1,4 @@
-package com.midterm.shoestore;
+package com.midterm.shoestore.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,7 +9,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class login_activity extends AppCompatActivity {
+import com.midterm.shoestore.R;
+
+public class LoginActivity extends AppCompatActivity {
     EditText email, password;
     ImageView btn_login;
     TextView btn_reg;
@@ -25,7 +27,7 @@ public class login_activity extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(login_activity.this, MainActivity.class);
+                Intent i = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(i);
 
             }
@@ -33,7 +35,7 @@ public class login_activity extends AppCompatActivity {
         btn_reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(login_activity.this, register_activity.class);
+                Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(i);
             }
         });
