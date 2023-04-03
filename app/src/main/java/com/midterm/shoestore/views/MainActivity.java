@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -29,8 +30,8 @@ public class MainActivity extends AppCompatActivity implements ShoeItemAdapter.S
     private RecyclerView recyclerView;
     private List<ShoeItem> shoeItemList;
     private ShoeItemAdapter adapter;
-    private CoordinatorLayout coordinatorLayout;
     private ImageView cartImageView;
+    private DrawerLayout drawerlayout;
     private ImageView userImageView;
 
     @Override
@@ -47,15 +48,15 @@ public class MainActivity extends AppCompatActivity implements ShoeItemAdapter.S
 
         cartImageView.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, CartActivity.class)));
 
-        userImageView.setOnClickListener(view -> {
-            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefsFile", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.clear();
-            editor.apply();
-
-            MainActivity.this.finish();
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        });
+//        userImageView.setOnClickListener(view -> {
+//            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefsFile", MODE_PRIVATE);
+//            SharedPreferences.Editor editor = sharedPreferences.edit();
+//            editor.clear();
+//            editor.apply();
+//
+//            MainActivity.this.finish();
+//            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+//        });
 
     }
 
@@ -83,8 +84,8 @@ public class MainActivity extends AppCompatActivity implements ShoeItemAdapter.S
     private void initializeVariables() {
 
         cartImageView = findViewById(R.id.cartIv);
-        userImageView = findViewById(R.id.userIv);
-        coordinatorLayout = findViewById(R.id.coordinatorLayout);
+//        userImageView = findViewById(R.id.userIv);
+        drawerlayout = findViewById(R.id.coordinatorLayout);
         shoeItemList = new ArrayList<>();
         recyclerView = findViewById(R.id.mainRecyclerView);
         recyclerView.setHasFixedSize(true);
