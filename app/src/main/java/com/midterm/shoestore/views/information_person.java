@@ -61,66 +61,58 @@ public class information_person extends AppCompatActivity {
         String email = bundle1.getString("email");
         String pass = bundle1.getString("pass");
 
-        img_btn_finish_reg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        img_btn_finish_reg.setOnClickListener(v -> {
 
-                String strName = edtNameChange.getText().toString().trim();
-                String strPhone = edtPhoneChange.getText().toString().trim();
-                String strDoB = dateButton.getText().toString().trim();
-                if(strName.equals(""))
-                {
-                    edtNameChange.setError("Error");
-                }
-                if(strPhone.equals("")) {
-                    edtPhoneChange.setError("Error");
-                }
-                if(!checkNameis((strName)))
-                {
-                    edtNameChange.setError("Sai tên");
-                }
-                if(strPhone.length() != 10)
-                {
-                    edtPhoneChange.setError("Sai SDT");
-                }
-                else{
-                    mAuth.createUserWithEmailAndPassword(email, pass)
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    final ProgressDialog mDialog = new ProgressDialog(information_person.this);
-                                    mDialog.setMessage("Login....");
-                                    mDialog.show();
-                                    FirebaseUser user = task.getResult().getUser();
-                                    // Lưu thông tin user vào Realtime Database
-                                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
-                                            .child("users").child(user.getUid());
-                                    userRef.child("name").setValue(strName);
-                                    userRef.child("sex").setValue(gender);
-                                    userRef.child("bod").setValue(strDoB);
-                                    userRef.child("phoneno").setValue(strPhone);
-                                    information_person.this.finish();
-                                    // Thông báo cho người dùng đăng ký thành công và chuyển sang trang đăng nhập
-                                    Intent i = new Intent(information_person.this, MainActivity.class);
-                                    startActivity(i);
-                                    SharedPreferences sharedPreferences = getSharedPreferences("MyPrefsFile", MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    editor.putBoolean("isLoggedIn", true);
-                                    editor.apply();
-                                    mDialog.dismiss();
-                                } else {
-                                    Toast.makeText(information_person.this, "Đã xảy ra lỗi gì rồi", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+            String strName = edtNameChange.getText().toString().trim();
+            String strPhone = edtPhoneChange.getText().toString().trim();
+            String strDoB = dateButton.getText().toString().trim();
+            if(strName.equals(""))
+            {
+                edtNameChange.setError("Error");
+            }
+            if(strPhone.equals("")) {
+                edtPhoneChange.setError("Error");
+            }
+            if(!checkNameis((strName)))
+            {
+                edtNameChange.setError("Sai tên");
+            }
+            if(strPhone.length() != 10)
+            {
+                edtPhoneChange.setError("Sai SDT");
+            }
+            else{
+                mAuth.createUserWithEmailAndPassword(email, pass)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                final ProgressDialog mDialog = new ProgressDialog(information_person.this);
+                                mDialog.setMessage("Login....");
+                                mDialog.show();
+                                FirebaseUser user = task.getResult().getUser();
+                                // Lưu thông tin user vào Realtime Database
+                                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
+                                        .child("users").child(user.getUid());
+                                userRef.child("name").setValue(strName);
+                                userRef.child("sex").setValue(gender);
+                                userRef.child("bod").setValue(strDoB);
+                                userRef.child("phoneno").setValue(strPhone);
+                                information_person.this.finish();
+                                // Thông báo cho người dùng đăng ký thành công và chuyển sang trang đăng nhập
+                                Intent i = new Intent(information_person.this, MainActivity.class);
+                                startActivity(i);
+                                SharedPreferences sharedPreferences = getSharedPreferences("MyPrefsFile", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putBoolean("isLoggedIn", true);
+                                editor.apply();
+                                mDialog.dismiss();
+                            } else {
+                                Toast.makeText(information_person.this, "Đã xảy ra lỗi gì rồi!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
-                }
             }
         });
-        txtLeftEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                information_person.this.finish();
-            }
-        });
+        txtLeftEdit.setOnClickListener(v -> information_person.this.finish());
     }
     public boolean checkNameis(String value)
     {
@@ -145,15 +137,10 @@ public class information_person extends AppCompatActivity {
 
     private void initDatePicker()
     {
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
-        {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day)
-            {
-                month = month + 1;
-                String date = makeDateString(day, month, year);
-                dateButton.setText(date);
-            }
+        DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
+            month = month + 1;
+            String date = makeDateString(day, month, year);
+            dateButton.setText(date);
         };
 
         Calendar cal = Calendar.getInstance();

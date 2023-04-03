@@ -55,50 +55,41 @@ public class LoginActivity extends AppCompatActivity {
 //            }
 //        });
 
-        btn_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String strEmail = email.getText().toString();
-                String strPass = password.getText().toString();
-                if(!strEmail.equals("") && !strPass.equals("") && Patterns.EMAIL_ADDRESS.matcher(strEmail).matches())
-                {
-                    mAuth.signInWithEmailAndPassword(strEmail, strPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                final ProgressDialog mDialog = new ProgressDialog(LoginActivity.this);
-                                mDialog.setMessage("Login....");
-                                mDialog.show();
-                                LoginActivity.this.finish();
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                LoginActivity.this.finish();
-                                mDialog.dismiss();
+        btn_login.setOnClickListener(view -> {
+            String strEmail = email.getText().toString();
+            String strPass = password.getText().toString();
+            if(!strEmail.equals("") && !strPass.equals("") && Patterns.EMAIL_ADDRESS.matcher(strEmail).matches())
+            {
+                mAuth.signInWithEmailAndPassword(strEmail, strPass).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        final ProgressDialog mDialog = new ProgressDialog(LoginActivity.this);
+                        mDialog.setMessage("Login....");
+                        mDialog.show();
+                        LoginActivity.this.finish();
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        LoginActivity.this.finish();
+                        mDialog.dismiss();
 
-                                // Lưu trạng thái đăng nhập thành công vào SharedPreferences
-                                SharedPreferences sharedPreferences = getSharedPreferences("MyPrefsFile", MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putBoolean("isLoggedIn", true);
-                                editor.apply();
+                        // Lưu trạng thái đăng nhập thành công vào SharedPreferences
+                        SharedPreferences sharedPreferences1 = getSharedPreferences("MyPrefsFile", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences1.edit();
+                        editor.putBoolean("isLoggedIn", true);
+                        editor.apply();
 
-                            } else {
-                                Toast.makeText(LoginActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
-                else {
-                    Toast.makeText(LoginActivity.this, "Đăng nhập lỗi", Toast.LENGTH_SHORT).show();
-                }
-
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
+            else {
+                Toast.makeText(LoginActivity.this, "Đăng nhập lỗi!", Toast.LENGTH_SHORT).show();
+            }
+
         });
-        btn_reg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(i);
-            }
+        btn_reg.setOnClickListener(view -> {
+            Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(i);
         });
 
     }

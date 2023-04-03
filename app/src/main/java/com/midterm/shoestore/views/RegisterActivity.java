@@ -30,65 +30,51 @@ public class RegisterActivity extends AppCompatActivity {
         btn_return_login = findViewById(R.id.txt_reg_to_login);
         btn_left_reg = findViewById(R.id.txtLefReg);
 
-        btn_left_reg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RegisterActivity.this.finish();
-            }
-        });
+        btn_left_reg.setOnClickListener(view -> RegisterActivity.this.finish());
 
-        btn_reg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btn_reg.setOnClickListener(view -> {
 
 
-                String strEmail = email.getText().toString().trim();
-                String strPass = pass.getText().toString().trim();
-                String strRepass = repass.getText().toString().trim();
-                if(Patterns.EMAIL_ADDRESS.matcher(strEmail).matches() && !TextUtils.isEmpty(strRepass) && !TextUtils.isEmpty(strEmail) && !TextUtils.isEmpty(strPass))
-                {
-                    if(strPass.equals(strRepass)) {
-                        Intent i = new Intent(RegisterActivity.this, information_person.class);
-                        Bundle bundle = new Bundle();
+            String strEmail = email.getText().toString().trim();
+            String strPass = pass.getText().toString().trim();
+            String strRepass = repass.getText().toString().trim();
+            if(Patterns.EMAIL_ADDRESS.matcher(strEmail).matches() && !TextUtils.isEmpty(strRepass) && !TextUtils.isEmpty(strEmail) && !TextUtils.isEmpty(strPass))
+            {
+                if(strPass.equals(strRepass)) {
+                    Intent i = new Intent(RegisterActivity.this, information_person.class);
+                    Bundle bundle = new Bundle();
 
-                        bundle.putString("email", strEmail);
-                        bundle.putString("pass", strPass);
+                    bundle.putString("email", strEmail);
+                    bundle.putString("pass", strPass);
 
-                        i.putExtra("Bun_Account_Reg",bundle);
+                    i.putExtra("Bun_Account_Reg",bundle);
 
-                        Log.e("email_in_reg", strEmail);
-                        Log.e("pass_in_reg", strPass);
-                        startActivity(i);
-                    }
+                    Log.e("email_in_reg", strEmail);
+                    Log.e("pass_in_reg", strPass);
+                    startActivity(i);
                 }
-                else
+            }
+            else
+            {
+                if(strEmail.equals(""))
                 {
-                    if(strEmail.equals(""))
-                    {
-                        email.setError("Lỗi rồi");
-                    }
-                    if(strPass.equals(""))
-                    {
-                        pass.setError("Lỗi rồi");
-                    }
-                    if(strRepass.equals(""))
-                    {
-                        repass.setError("Lỗi rồi");
-                    }
-                    if(!Patterns.EMAIL_ADDRESS.matcher(strEmail).matches())
-                    {
-                        email.setError("Sai");
-                    }
+                    email.setError("Lỗi rồi!");
                 }
-
+                if(strPass.equals(""))
+                {
+                    pass.setError("Lỗi rồi!");
+                }
+                if(strRepass.equals(""))
+                {
+                    repass.setError("Lỗi rồi!");
+                }
+                if(!Patterns.EMAIL_ADDRESS.matcher(strEmail).matches())
+                {
+                    email.setError("Sai");
+                }
             }
-        });
-        btn_return_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                RegisterActivity.this.finish();
-            }
         });
+        btn_return_login.setOnClickListener(v -> RegisterActivity.this.finish());
     }
 }

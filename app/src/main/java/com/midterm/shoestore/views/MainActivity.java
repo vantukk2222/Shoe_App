@@ -45,24 +45,16 @@ public class MainActivity extends AppCompatActivity implements ShoeItemAdapter.S
         recyclerView.setAdapter(adapter);
 
 
-        cartImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, CartActivity.class));
-            }
-        });
+        cartImageView.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, CartActivity.class)));
 
-        userImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences sharedPreferences = getSharedPreferences("MyPrefsFile", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.clear();
-                editor.apply();
+        userImageView.setOnClickListener(view -> {
+            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefsFile", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.apply();
 
-                MainActivity.this.finish();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            }
+            MainActivity.this.finish();
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
         });
 
     }
@@ -71,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements ShoeItemAdapter.S
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode==KeyEvent.KEYCODE_BACK)
 
-            Toast.makeText(getApplicationContext(), "back press", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "back press!", Toast.LENGTH_LONG).show();
 
         return false;
         // Disable back button..............

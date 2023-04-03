@@ -11,6 +11,7 @@ public class users {
     public users(users u)
     {
         this.bod = u.bod;
+
         this.name = u.name;
         this.phoneno = u.phoneno;
         this.sex = u.sex;
