@@ -63,7 +63,7 @@
             android:textColorHint="#3B608C"
             android:drawablePadding="10dp"
             android:drawableStart="@drawable/password"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtmail_login" />

@@ -21,6 +21,15 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/top_background1" />
         <TextView
+            android:id="@+id/txtLefReg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-15dp"
+            android:background="@drawable/ic_baseline_chevron_left_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,7 +53,7 @@
             android:drawablePadding="10dp"
             android:ems="10"
             android:hint="Mật khẩu"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             android:textColorHint="#3B608C"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +94,7 @@
             android:textColorHint="#3B608C"
             android:drawablePadding="10dp"
             android:drawableStart="@drawable/password"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_pass_reg" />
