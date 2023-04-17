@@ -5,9 +5,12 @@
       <map>
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/drawable/btn_background.xml" value="0.2135" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/drawable/btn_finish_reg_background.xml" value="0.2135" />
+        <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/drawable/btn_sort.xml" value="0.2215" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/drawable/edittextbackground.xml" value="0.2135" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/drawable/ic_baseline_chevron_left_24.xml" value="0.2135" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/drawable/ic_baseline_chevron_right_24.xml" value="0.2135" />
+        <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/drawable/radio_selector.xml" value="0.2215" />
+        <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/drawable/radio_text_color_selector.xml" value="0.2215" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/drawable/success_icon.xml" value="0.2215" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/layout/activity_cart.xml" value="0.20217588395285585" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/layout/activity_detailed.xml" value="0.20217588395285585" />
@@ -15,14 +18,17 @@
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/layout/activity_login.xml" value="0.331720801658604" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/layout/activity_main.xml" value="0.17769718948322757" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/layout/activity_register.xml" value="0.2" />
+        <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/layout/add_to_cart.xml" value="0.20436083796494228" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/layout/each_shoe.xml" value="0.20217588395285585" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/layout/fragment_home.xml" value="0.20217588395285585" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/layout/fragment_home2.xml" value="0.20217588395285585" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/layout/fragment_settings.xml" value="0.20521590423257802" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/layout/fragment_share.xml" value="0.20521590423257802" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/layout/item_cart.xml" value="0.2" />
+        <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/layout/layout_addnumber.xml" value="0.20436083796494228" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/layout/layout_thanhtoan.xml" value="0.20217588395285585" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/layout/nav_header.xml" value="0.20217588395285585" />
+        <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/layout/sort_filter_dialog.xml" value="0.20436083796494228" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/menu/my_navigation_items.xml" value="0.20521590423257802" />
       </map>
     </option>
