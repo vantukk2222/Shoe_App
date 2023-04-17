@@ -3,6 +3,8 @@ package com.midterm.shoestore.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,12 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.midterm.shoestore.R;
 import com.midterm.shoestore.model.ShoeItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShoeItemAdapter extends RecyclerView.Adapter<ShoeItemAdapter.ShoeItemViewHolder> {
 
     private List<ShoeItem> shoeItemList;
+
     private ShoeClickedListeners shoeClickedListeners;
+    private List<ShoeItem> filteredList; // danh sách đã được lọc
+
     public ShoeItemAdapter(ShoeClickedListeners shoeClickedListeners){
         this.shoeClickedListeners = shoeClickedListeners;
     }
@@ -64,6 +70,7 @@ public class ShoeItemAdapter extends RecyclerView.Adapter<ShoeItemAdapter.ShoeIt
         }
     }
 
+
     public class ShoeItemViewHolder extends RecyclerView.ViewHolder{
         private ImageView shoeImageView , addToCartBtn;
         private TextView shoeNameTv, shoeBrandNameTv, shoePriceTv;
@@ -84,4 +91,10 @@ public class ShoeItemAdapter extends RecyclerView.Adapter<ShoeItemAdapter.ShoeIt
         void onCardClicked(ShoeItem shoe);
         //void onAddToCartBtnClicked(ShoeItem shoeItem);
     }
+    public void updateList(List<ShoeItem> newItems) {
+        shoeItemList = newItems;
+        notifyDataSetChanged();
+    }
+
+
 }
