@@ -9,14 +9,20 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.ktx.Firebase;
 import com.midterm.shoestore.R;
 import com.midterm.shoestore.adapter.ShoeItemAdapter;
 import com.midterm.shoestore.model.ShoeItem;
@@ -33,15 +39,23 @@ public class MainActivity extends AppCompatActivity implements ShoeItemAdapter.S
     private ImageView cartImageView;
     private ImageView userImageView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         initializeVariables();
-        setUpList();
+        //setUpList();
 
+        recyclerView = findViewById(R.id.mainRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        shoeItemList = new ArrayList<>();
+        // Thêm dữ liệu vào danh sách sản phẩm giày tại đây
+        //adapter = new ShoeItemAdapter((ShoeItemAdapter.ShoeClickedListeners) shoeItemList);
         adapter.setShoeItemList(shoeItemList);
+
         recyclerView.setAdapter(adapter);
 
 
@@ -68,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements ShoeItemAdapter.S
         return false;
         // Disable back button..............
     }
-    private void setUpList() {
+    /*private void setUpList() {
         shoeItemList.add(new ShoeItem("Nike Revolution", "Nike", R.drawable.nike_revolution_road, 15));
         shoeItemList.add(new ShoeItem("Nike Flex Run 2021", "NIKE", R.drawable.flex_run_road_running, 20));
         shoeItemList.add(new ShoeItem("Court Zoom Vapor", "NIKE", R.drawable.nikecourt_zoom_vapor_cage, 18));
@@ -78,13 +92,19 @@ public class MainActivity extends AppCompatActivity implements ShoeItemAdapter.S
         shoeItemList.add(new ShoeItem("Adidas Questar", "ADIDAS", R.drawable.adidas_questar_shoes, 12));
         shoeItemList.add(new ShoeItem("Adidas Ultraboost", "ADIDAS", R.drawable.adidas_ultraboost, 15));
 
-    }
+    }*/
+    // Tham chiếu đến nút chứa dữ liệu giày trên Realtime Database
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference shoesRef = database.getReference().child("shoes");
+
+
+
 
     private void initializeVariables() {
 
         cartImageView = findViewById(R.id.cartIv);
         userImageView = findViewById(R.id.userIv);
-        coordinatorLayout = findViewById(R.id.coordinatorLayout);
+        //coordinatorLayout = findViewById(R.id.coordinatorLayout);
         shoeItemList = new ArrayList<>();
         recyclerView = findViewById(R.id.mainRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -97,9 +117,14 @@ public class MainActivity extends AppCompatActivity implements ShoeItemAdapter.S
     @Override
     public void onCardClicked(ShoeItem shoe) {
 
-//        Intent intent = new Intent(MainActivity.this, DetailedActivity.class);
-//        intent.putExtra("shoeItem", shoe);
-//        startActivity(intent);
+        Intent intent = new Intent(MainActivity.this, DetailedActivity.class);
+        intent.putExtra("shoeItem", shoe);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onAddToCartBtnClicked(ShoeItem shoeItem) {
+
     }
 
 

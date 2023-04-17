@@ -3,23 +3,41 @@ package com.midterm.shoestore.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ShoeItem implements Parcelable {
 
-    private String shoeName, shoeBrandName;
-    private int shoeImage;
+    private String shoeName;
+    private int shoeBrand;
+    private int shoeCategory;
+    private int shoeColor;
+    private String shoeImage;
+    private int shoeStatus;
+    private int shoeSize;
     private double shoePrice;
 
-    public ShoeItem(String shoeName, String shoeBrandName, int shoeImage, double shoePrice) {
+    public ShoeItem() {}
+
+    public ShoeItem(String shoeName, int shoeBrand, int shoeCategory, int shoeColor, String shoeImage, int shoeStatus, int shoeSize, double shoePrice) {
         this.shoeName = shoeName;
-        this.shoeBrandName = shoeBrandName;
+        this.shoeBrand = shoeBrand;
+        this.shoeCategory = shoeCategory;
+        this.shoeColor = shoeColor;
         this.shoeImage = shoeImage;
+        this.shoeStatus = shoeStatus;
+        this.shoeSize = shoeSize;
         this.shoePrice = shoePrice;
     }
 
     protected ShoeItem(Parcel in) {
         shoeName = in.readString();
-        shoeBrandName = in.readString();
-        shoeImage = in.readInt();
+        shoeBrand = in.readInt();
+        shoeCategory = in.readInt();
+        shoeColor = in.readInt();
+        shoeImage = in.readString();
+        shoeStatus = in.readInt();
+        shoeSize = in.readInt();
         shoePrice = in.readDouble();
     }
 
@@ -43,20 +61,52 @@ public class ShoeItem implements Parcelable {
         this.shoeName = shoeName;
     }
 
-    public String getShoeBrandName() {
-        return shoeBrandName;
+    public int getShoeBrand() {
+        return shoeBrand;
     }
 
-    public void setShoeBrandName(String shoeBrandName) {
-        this.shoeBrandName = shoeBrandName;
+    public void setShoeBrand(int shoeBrand) {
+        this.shoeBrand = shoeBrand;
     }
 
-    public int getShoeImage() {
+    public int getShoeCategory() {
+        return shoeCategory;
+    }
+
+    public void setShoeCategory(int shoeCategory) {
+        this.shoeCategory = shoeCategory;
+    }
+
+    public int getShoeColor() {
+        return shoeColor;
+    }
+
+    public void setShoeColor(int shoeColor) {
+        this.shoeColor = shoeColor;
+    }
+
+    public String getShoeImage() {
         return shoeImage;
     }
 
-    public void setShoeImage(int shoeImage) {
+    public void setShoeImage(String shoeImage) {
         this.shoeImage = shoeImage;
+    }
+
+    public int getShoeStatus() {
+        return shoeStatus;
+    }
+
+    public void setShoeStatus(int shoeStatus) {
+        this.shoeStatus = shoeStatus;
+    }
+
+    public int getShoeSize() {
+        return shoeSize;
+    }
+
+    public void setShoeSize(int shoeSize) {
+        this.shoeSize = shoeSize;
     }
 
     public double getShoePrice() {
@@ -67,6 +117,19 @@ public class ShoeItem implements Parcelable {
         this.shoePrice = shoePrice;
     }
 
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("shoeName", shoeName);
+        result.put("shoeBrand", shoeBrand);
+        result.put("shoeCategory", shoeCategory);
+        result.put("shoeColor", shoeColor);
+        result.put("shoeImage", shoeImage);
+        result.put("shoeStatus", shoeStatus);
+        result.put("shoeSize", shoeSize);
+        result.put("shoePrice", shoePrice);
+        return result;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -75,8 +138,12 @@ public class ShoeItem implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(shoeName);
-        parcel.writeString(shoeBrandName);
-        parcel.writeInt(shoeImage);
+        parcel.writeInt(shoeBrand);
+        parcel.writeInt(shoeCategory);
+        parcel.writeInt(shoeColor);
+        parcel.writeString(shoeImage);
+        parcel.writeInt(shoeStatus);
+        parcel.writeInt(shoeSize);
         parcel.writeDouble(shoePrice);
     }
 }
