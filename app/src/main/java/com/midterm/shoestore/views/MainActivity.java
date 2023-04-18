@@ -1,152 +1,199 @@
 package com.midterm.shoestore.views;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.android.material.navigation.NavigationView;
 import com.midterm.shoestore.R;
-import com.midterm.shoestore.adapter.ShoeItemAdapter;
-import com.midterm.shoestore.model.ShoeItem;
 
-import java.util.ArrayList;
-import java.util.List;
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-public class MainActivity extends AppCompatActivity implements ShoeItemAdapter.ShoeClickedListeners {
-
-    private RecyclerView recyclerView;
-    private List<ShoeItem> shoeItemList;
-    private ShoeItemAdapter adapter;
-    private CoordinatorLayout coordinatorLayout;
-    private ImageView cartImageView;
-    private ImageView userImageView;
-
-
+    private ImageView filterView;
+    private DrawerLayout drawerlayout;
+    private SearchView searchView;
+    private Dialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initializeVariables();
-        setUpList();
-
-        recyclerView = findViewById(R.id.mainRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        shoeItemList = new ArrayList<>();
-        // Thêm dữ liệu vào danh sách sản phẩm giày tại đây
-        //adapter = new ShoeItemAdapter((ShoeItemAdapter.ShoeClickedListeners) shoeItemList);
-        adapter.setShoeItemList(shoeItemList);
-
-        recyclerView.setAdapter(adapter);
+        Toolbar toolbar = findViewById(R.id.toolbar); //Ignore red line errors
+        setSupportActionBar(toolbar);
+        searchView = findViewById(R.id.searchView_home);
+        filterView = findViewById(R.id.filter_home);
+        drawerlayout = findViewById(R.id.drawer_layout);
+        dialog = new Dialog(this);
 
 
-        cartImageView.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, CartActivity.class)));
 
-        userImageView.setOnClickListener(view -> {
-            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefsFile", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.clear();
-            editor.apply();
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
-            MainActivity.this.finish();
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerlayout, toolbar, R.string.open_nav, R.string.close_nav);
+
+        drawerlayout.addDrawerListener(toggle);
+        toggle.syncState();
+        if( savedInstanceState == null)
+        {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+        }
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                homeFragment.onSearchQueryChanged(newText);
+                return true;
+            }
+        });
+        filterView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openbuydialog();
+            }
+        });
+//        userImageView.setOnClickListener(view -> {
+//            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefsFile", MODE_PRIVATE);
+//            SharedPreferences.Editor editor = sharedPreferences.edit();
+//            editor.clear();
+//            editor.apply();
+//
+//            MainActivity.this.finish();
+//            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+//        });
+
+    }
+
+    private void openbuydialog() {
+        dialog.setContentView(R.layout.sort_filter_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        TextView leftSort, acpSort, resetSort;
+
+        leftSort = dialog.findViewById(R.id.leftSort);
+        acpSort = dialog.findViewById(R.id.acptSort);
+        resetSort = dialog.findViewById(R.id.resetSort);
+
+        CheckBox adidas, nike, sneaker, running, red, blue, black, size385, size39, size40, size405, size41, size42, size425, size43, size44;
+        adidas = dialog.findViewById(R.id.brandAdidas);
+        nike = dialog.findViewById(R.id.brandNike);
+
+        sneaker = dialog.findViewById(R.id.cateSneaker);
+        running = dialog.findViewById(R.id.cateRunning);
+
+        red = dialog.findViewById(R.id.colorRed);
+        blue = dialog.findViewById(R.id.colorBlue);
+        black = dialog.findViewById(R.id.colorBlack);
+
+        size385 = dialog.findViewById(R.id.size385);
+        size39 = dialog.findViewById(R.id.size39);
+        size40 = dialog.findViewById(R.id.size40);
+        size405 = dialog.findViewById(R.id.size405);
+        size41 = dialog.findViewById(R.id.size41);
+        size42 = dialog.findViewById(R.id.size42);
+        size425 = dialog.findViewById(R.id.size425);
+        size43 = dialog.findViewById(R.id.size43);
+        size44 = dialog.findViewById(R.id.size44);
+
+
+
+
+        leftSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        acpSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        resetSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adidas.setChecked(false);
+                nike.setChecked(false);
+                sneaker.setChecked(false);
+                running.setChecked(false);
+                red.setChecked(false);
+                blue.setChecked(false);
+                black.setChecked(false);
+                size385.setChecked(false);
+                size39.setChecked(false);
+                size40.setChecked(false);
+                size405.setChecked(false);
+                size41.setChecked(false);
+                size42.setChecked(false);
+                size425.setChecked(false);
+                size43.setChecked(false);
+                size44.setChecked(false);
+            }
         });
 
+
+
+
+        /* Them chuc nang o day*/
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        wlp.gravity = Gravity.BOTTOM;
+        window.setAttributes(wlp);
+        dialog.show();
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode==KeyEvent.KEYCODE_BACK)
-
-            Toast.makeText(getApplicationContext(), "back press!", Toast.LENGTH_LONG).show();
-
-        return false;
-        // Disable back button..............
-    }
-    /*private void setUpList() {
-        shoeItemList.add(new ShoeItem("Nike Revolution", "Nike", R.drawable.nike_revolution_road, 15));
-        shoeItemList.add(new ShoeItem("Nike Flex Run 2021", "NIKE", R.drawable.flex_run_road_running, 20));
-        shoeItemList.add(new ShoeItem("Court Zoom Vapor", "NIKE", R.drawable.nikecourt_zoom_vapor_cage, 18));
-        shoeItemList.add(new ShoeItem("EQ21 Run COLD.RDY", "ADIDAS", R.drawable.adidas_eq_run, 16.5));
-        shoeItemList.add(new ShoeItem("Adidas Ozelia", "ADIDAS", R.drawable.adidas_ozelia_shoes_grey, 20));
-        shoeItemList.add(new ShoeItem("Adidas Questar", "ADIDAS", R.drawable.adidas_questar_shoes, 22));
-        shoeItemList.add(new ShoeItem("Adidas Questar", "ADIDAS", R.drawable.adidas_questar_shoes, 12));
-        shoeItemList.add(new ShoeItem("Adidas Ultraboost", "ADIDAS", R.drawable.adidas_ultraboost, 15));
-
-    }*/
-    // Tham chiếu đến nút chứa dữ liệu giày trên Realtime Database
-    DatabaseReference shoesRef = FirebaseDatabase.getInstance().getReference().child("shoes");
-    shoesRef.addValueEventListener(new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot snapshot) {
-            // Lấy danh sách các sản phẩm giày từ dữ liệu trên Firebase Realtime Database
-            List<Shoe> shoeList = new ArrayList<>();
-            for (DataSnapshot shoeSnapshot : snapshot.getChildren()) {
-                Shoe shoe = shoeSnapshot.getValue(Shoe.class);
-                shoeList.add(shoe);
-            }
-
-            // Thiết lập adapter cho RecyclerView
-            ShoeAdapter shoeAdapter = new ShoeAdapter(shoeList);
-            shoeRecyclerView.setAdapter(shoeAdapter);
-
-            // Ẩn ProgressBar nếu RecyclerView hiển thị dữ liệu
-            if (shoeList.size() > 0) {
-                progressBar.setVisibility(View.GONE);
-            }
+    public void onBackPressed() {
+        if (drawerlayout.isDrawerOpen(GravityCompat.START)) {
+            drawerlayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
+    }
+//
 
-        @Override
-        public void onCancelled(@NonNull DatabaseError error) {
-            // Xử lý lỗi nếu có
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nav_home:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+                break;
+            case R.id.nav_settings:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
+                break;
+            case R.id.nav_share:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShareFragment()).commit();
+                break;
+            case R.id.nav_logout:
+                Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
+                break;
         }
-    });
-
-
-    private void initializeVariables() {
-
-        cartImageView = findViewById(R.id.cartIv);
-        userImageView = findViewById(R.id.userIv);
-        //coordinatorLayout = findViewById(R.id.coordinatorLayout);
-        shoeItemList = new ArrayList<>();
-        recyclerView = findViewById(R.id.mainRecyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-
-        adapter = new ShoeItemAdapter(this);
-
+        drawerlayout.closeDrawer(GravityCompat.START);
+        return true;
     }
-
-    @Override
-    public void onCardClicked(ShoeItem shoe) {
-
-        Intent intent = new Intent(MainActivity.this, DetailedActivity.class);
-        intent.putExtra("shoeItem", shoe);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onAddToCartBtnClicked(ShoeItem shoeItem) {
-
-    }
-
 
 }
