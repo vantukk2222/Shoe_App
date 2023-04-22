@@ -3,7 +3,6 @@ package com.midterm.shoestore.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "shoe_table")
 public class ShoeCart {
 
     @PrimaryKey(autoGenerate = true)

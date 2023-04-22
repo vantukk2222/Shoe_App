@@ -61,7 +61,7 @@ public class DetailedActivity extends AppCompatActivity {
         shoeNameTV.setText(shoe.getShoeName());
         shoeBrandNameTV.setText(shoe.getShoeBrandName());
         shoePriceTV.setText(String.valueOf(shoe.getShoePrice()));
-        shoeImageView.setImageResource(shoe.getShoeImage());
+        //shoeImageView.setImageResource(shoe.getShoeImage());
 
     }
 

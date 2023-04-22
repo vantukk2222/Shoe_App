@@ -17,6 +17,10 @@ public class ShoeItem implements Parcelable {
         this.shoeImage = shoeImage;
         this.shoePrice = shoePrice;
     }
+
+    public ShoeItem(){
+
+    }
     protected ShoeItem(Parcel in)
     {
         shoe_ID = in.readInt();
