@@ -2,6 +2,7 @@ package com.midterm.shoestore.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 
+import com.bumptech.glide.Glide;
 import com.midterm.shoestore.R;
 import com.midterm.shoestore.model.ShoeItem;
 
@@ -44,7 +46,7 @@ public class DetailedActivity extends AppCompatActivity {
             }
         });
         if (shoe != null) {
-            setDataToWidgets();
+            setDataToWidgets(this);
         }
 
         /*addToCartBtn.setOnClickListener(new View.OnClickListener() {
@@ -57,10 +59,15 @@ public class DetailedActivity extends AppCompatActivity {
     }
 
 
-    private void setDataToWidgets() {
+    private void setDataToWidgets(Context context) {
         shoeNameTV.setText(shoe.getShoeName());
         shoeBrandNameTV.setText(shoe.getShoeBrandName());
         shoePriceTV.setText(String.valueOf(shoe.getShoePrice()));
+        if (context != null) {
+            Glide.with(context)
+                    .load(shoe.getShoeImage())
+                    .into(shoeImageView);
+        }
         //shoeImageView.setImageResource(shoe.getShoeImage());
 
     }
