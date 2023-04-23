@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,14 +16,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.midterm.shoestore.R;
 import com.midterm.shoestore.model.ShoeItem;
-import com.midterm.shoestore.views.HomeFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class ShoeItemAdapter extends RecyclerView.Adapter<ShoeItemAdapter.ShoeItemViewHolder> {
 
+    @BindView(R.id.eachShoeIv)
+    ImageView imageView;
+    @BindView(R.id.eachShoeName)
+    TextView tv_shoeName;
+    @BindView(R.id.eachShoePriceTv)
+    TextView tv_shoePrice;
 
+    private Unbinder unbinder;
     private List<ShoeItem> shoeItemList;
     private Context context;
     private ShoeClickedListeners shoeClickedListeners;
@@ -35,18 +47,16 @@ public class ShoeItemAdapter extends RecyclerView.Adapter<ShoeItemAdapter.ShoeIt
     public void setShoeItemList(List<ShoeItem> shoeItemList){
         this.shoeItemList = shoeItemList;
     }
-
     @NonNull
     @Override
     public ShoeItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.each_shoe , parent , false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.each_shoe , parent , false);
         return new ShoeItemViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ShoeItemViewHolder holder, int position) {
         ShoeItem shoeItem = shoeItemList.get(position);
-
         //holder.shoeNameTv.setText(shoeItem.getShoeName());
         //holder.shoeBrandNameTv.setText(shoeItem.getShoeBrandName());
         //holder.shoePriceTv.setText(String.valueOf(shoeItem.getShoePrice()));
@@ -59,21 +69,9 @@ public class ShoeItemAdapter extends RecyclerView.Adapter<ShoeItemAdapter.ShoeIt
             }
         });
 
-
-        if (shoeItemList != null && shoeItemList.size() > position && shoeItemList.get(position) != null && shoeItemList.get(position).getShoeImage() != null) {
-            //Glide.with(context).load(shoeItemList.get(position).getShoeImage()).into(holder.shoeImageView);
-            Glide.with(context).load(shoeItemList.get(position).getShoeImage() != null ? shoeItemList.get(position).getShoeImage() : "https://icon-library.com/images/empty-icon/empty-icon-19.jpg").into(holder.shoeImageView);
-        } else {
-
-        }
-
-
-        //Glide.with(context).load(shoeItemList.get(position).getShoeImage()).into(holder.shoeImageView);
-
+        Glide.with(context).load(shoeItemList.get(position).getShoeImage()).into(holder.shoeImageView);
         holder.shoePriceTv.setText(new StringBuilder("$").append(shoeItemList.get(position).getShoePrice()));
         holder.shoeNameTv.setText(new StringBuilder().append(shoeItemList.get(position).getShoeName()));
-        holder.shoeBrandNameTv.setText(new StringBuilder().append(shoeItemList.get(position).getShoeBrandName()));
-
         /*holder.addToCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,12 +96,10 @@ public class ShoeItemAdapter extends RecyclerView.Adapter<ShoeItemAdapter.ShoeIt
         private CardView cardView;
         public ShoeItemViewHolder(@NonNull View itemView) {
             super(itemView);
-            shoeImageView = itemView.findViewById(R.id.eachShoeIv);
-            shoeNameTv = itemView.findViewById(R.id.eachShoeName);
-            shoePriceTv = itemView.findViewById(R.id.eachShoePriceTv);
-            shoeBrandNameTv = itemView.findViewById(R.id.eachShoeBrandNameTv);
+            unbinder = ButterKnife.bind(this, itemView);
 
-            cardView = itemView.findViewById(R.id.eachShoeCardView);
+
+            //cardView = itemView.findViewById(R.id.eachShoeCardView);
             //addToCartBtn = itemView.findViewById(R.id.eachShoeAddToCartBtn);
             //shoeNameTv = itemView.findViewById(R.id.eachShoeName);
             //shoeImageView = itemView.findViewById(R.id.eachShoeIv);

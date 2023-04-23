@@ -106,8 +106,8 @@ public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClicke
 
         recyclerView = view.findViewById(R.id.mainRecyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        adapter = new ShoeItemAdapter(getActivity(), shoeItemList, this);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        adapter = new ShoeItemAdapter(getContext(), shoeItemList, this);
 
         //setUpList();
         loadItemFromFirebase();
@@ -127,9 +127,9 @@ public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClicke
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()){
                             for(DataSnapshot itemSnapshot:snapshot.getChildren()){
-                                ShoeItem shoeItem = itemSnapshot.getValue(ShoeItem.class);
-                                shoeItem.setShoe_ID(itemSnapshot.getKey());
-                                shoeItemList.add(shoeItem);
+                                //ShoeItem shoeItem = itemSnapshot.getValue(ShoeItem.class);
+                                //shoeItem.setShoe_ID(Integer.parseInt(itemSnapshot.getKey()));
+                                //shoeItemList.add(shoeItem);
                             }
                             shoeItemLoadListener.onShoeItemLoadSuccess(shoeItemList);
 
@@ -205,7 +205,7 @@ public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClicke
 
     @Override
     public void onShoeItemLoadSuccess(List<ShoeItem> shoeItemList) {
-        ShoeItemAdapter shoeItemAdapter = new ShoeItemAdapter(getActivity(), shoeItemList, this);
+        ShoeItemAdapter shoeItemAdapter = new ShoeItemAdapter(getContext(), shoeItemList, this);
         recyclerView.setAdapter(shoeItemAdapter);
     }
 
