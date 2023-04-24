@@ -43,13 +43,13 @@ public class information_person extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         img_btn_finish_reg = findViewById(R.id.img_btn_finish_reg);
-        txtLeftEdit = findViewById(R.id.txtLeftEdit);
+        txtLeftEdit = findViewById(R.id.txtLeftReg);
 
 
-        edtNameChange = findViewById(R.id.edtNameChange);
-        radioM = findViewById(R.id.radioM);
-        dateButton = findViewById(R.id.datePickerButton);
-        edtPhoneChange = findViewById(R.id.edtPhoneChange);
+        edtNameChange = findViewById(R.id.edtNameReg);
+        radioM = findViewById(R.id.radioM_reg);
+        dateButton = findViewById(R.id.datePickerButton_reg);
+        edtPhoneChange = findViewById(R.id.edtPhoneChange_reg);
         dateButton.setText(getTodaysDate());
 
         boolean gender = radioM.isChecked();

@@ -49,9 +49,17 @@ public class LoginActivity extends AppCompatActivity {
         // Kiểm tra đăng nhập trong phương thức onCreate() của Activity đăng nhập
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String uid = preferences.getString("uid", "");
-        if(!uid.isEmpty()) {
+        if(uid.equals("admin")) {
+            // Chuyển người dùng đến Activity chính của ứng dụng
+            Intent intent = new Intent(this, AdminActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
+        else if(!uid.isEmpty()) {
             // Chuyển người dùng đến Activity chính của ứng dụng
             Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
         }
@@ -103,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_login.setOnClickListener(view -> {
             String strEmail = email.getText().toString();
             String strPass = password.getText().toString();
-            if(!strEmail.equals("") && !strPass.equals("") && Patterns.EMAIL_ADDRESS.matcher(strEmail).matches())
+            if(!strEmail.equals("") && !strPass.equals(""))
             {
                 mAuth.signInWithEmailAndPassword(strEmail, strPass).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -128,7 +136,19 @@ public class LoginActivity extends AppCompatActivity {
 //                        editor.putBoolean("isLoggedIn", true);
 //                        editor.apply();
 
-                    } else {
+                    }
+                    else if(strEmail.equals("admin") && strPass.equals("admin"))
+                    {
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                        // Lưu phiên đăng nhập của user
+//                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        preferences.edit().putString("uid", "admin").apply();
+
+                        Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                        startActivity(intent);
+                    }
+                    else {
                         Toast.makeText(LoginActivity.this, "Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();
                     }
                 });

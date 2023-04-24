@@ -18,6 +18,18 @@
         android:theme="@style/Theme.ShoeStore"
         tools:targetApi="31">
         <activity
+            android:name=".views.AdminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".views.Main_Infor"
+            android:exported="false" />
+        <activity
+            android:name=".views.changePassword"
+            android:exported="false" />
+        <activity
+            android:name=".views.edit_Profile"
+            android:exported="false" />
+        <activity
             android:name=".views.show_list_cart"
             android:exported="false" />
         <activity
@@ -45,7 +57,7 @@
         <activity
             android:name=".views.MainActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

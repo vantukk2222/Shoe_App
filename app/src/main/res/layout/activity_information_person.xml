@@ -22,7 +22,7 @@
             app:srcCompat="@drawable/top_background" />
 
         <TextView
-            android:id="@+id/txtLeftEdit"
+            android:id="@+id/txtLeftReg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="-15dp"
@@ -76,7 +76,7 @@
                     android:textSize="18sp" />
 
                 <EditText
-                    android:id="@+id/edtNameChange"
+                    android:id="@+id/edtNameReg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -112,13 +112,13 @@
                     android:textSize="18sp" />
 
                 <RadioGroup
-                    android:id="@+id/radioGrp"
+                    android:id="@+id/radioGrp_reg"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_weight="1">
                     <RadioButton
-                        android:id="@+id/radioM"
+                        android:id="@+id/radioM_reg"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:checked="true"
@@ -129,7 +129,7 @@
                         android:text="Nam"
                         />
                     <RadioButton
-                        android:id="@+id/radioF"
+                        android:id="@+id/radioF_reg"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:checked="false"
@@ -166,7 +166,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/datePickerButton"
+                    android:id="@+id/datePickerButton_reg"
                     style="?android:spinnerStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="40sp"
@@ -207,7 +207,7 @@
                     android:textSize="18sp" />
 
                 <EditText
-                    android:id="@+id/edtPhoneChange"
+                    android:id="@+id/edtPhoneChange_reg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

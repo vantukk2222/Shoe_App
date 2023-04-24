@@ -218,22 +218,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
                 break;
             case R.id.nav_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
+                Intent intent_setting = new Intent(getApplicationContext(), Main_Infor.class);
+                startActivity(intent_setting);
+
                 break;
             case R.id.nav_share:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShareFragment()).commit();
                 break;
             case R.id.nav_cart:
 
-                Intent newintent = new Intent(getApplicationContext(), show_list_cart.class);
+                Intent intent_cart = new Intent(getApplicationContext(), show_list_cart.class);
 
-                startActivity(newintent);
+                startActivity(intent_cart);
                 break;
             case R.id.nav_logout:
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 preferences.edit().remove("uid").apply();
 
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish(); // Đóng Activity hiện tại
 
