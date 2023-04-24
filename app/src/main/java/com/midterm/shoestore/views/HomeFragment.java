@@ -12,20 +12,35 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.midterm.shoestore.R;
 import com.midterm.shoestore.adapter.ShoeItemAdapter;
+import com.midterm.shoestore.listener.ShoeItemLoadListener;
 import com.midterm.shoestore.model.ShoeItem;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClickedListeners {
+public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClickedListeners, ShoeItemLoadListener {
+
+    @BindView(R.id.home_fragment)
+    FrameLayout mainLayout;
+    @BindView(R.id.mainRecyclerView)
+    RecyclerView recyclerView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,10 +53,12 @@ public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClicke
     private String mParam2;
     private List<ShoeItem> shoeItemList;
     private List<ShoeItem> shoeItemListFilter;
-    private RecyclerView recyclerView;
+    //private RecyclerView recyclerView;
     private String searchQuery = "";
 
     private ShoeItemAdapter adapter;
+
+    ShoeItemLoadListener shoeItemLoadListener;
 
 
     public HomeFragment() {
@@ -89,20 +106,51 @@ public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClicke
 
         recyclerView = view.findViewById(R.id.mainRecyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        adapter = new ShoeItemAdapter(this);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        adapter = new ShoeItemAdapter(getActivity(), shoeItemList, this);
 
-        setUpList();
+        //setUpList();
+        loadItemFromFirebase();
         adapter.setShoeItemList(shoeItemList);
         recyclerView.setAdapter(adapter);
 
 
 
     }
-        private void initializeVariables() {
+
+    private void loadItemFromFirebase() {
         shoeItemList = new ArrayList<>();
+        FirebaseDatabase.getInstance()
+                .getReference("shoes")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            for(DataSnapshot itemSnapshot:snapshot.getChildren()){
+                                ShoeItem shoeItem = itemSnapshot.getValue(ShoeItem.class);
+                                shoeItem.setShoe_ID(itemSnapshot.getKey());
+                                shoeItemList.add(shoeItem);
+                            }
+                            shoeItemLoadListener.onShoeItemLoadSuccess(shoeItemList);
+
+                        }
+                        else
+                            shoeItemLoadListener.onShoeItemLoadFailed("Can't find Shoe");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        shoeItemLoadListener.onShoeItemLoadFailed(error.getMessage());
+
+                    }
+                });
     }
-    private void setUpList() {
+
+    private void initializeVariables() {
+        shoeItemList = new ArrayList<>();
+        shoeItemLoadListener = this;
+    }
+    /*private void setUpList() {
         shoeItemList.add(new ShoeItem(1,"Nike Revolution", "Nike", R.drawable.nike_revolution_road, 15));
         shoeItemList.add(new ShoeItem(2,"Nike Flex Run 2021", "NIKE", R.drawable.flex_run_road_running, 20));
         shoeItemList.add(new ShoeItem(3,"Court Zoom Vapor", "NIKE", R.drawable.nikecourt_zoom_vapor_cage, 18));
@@ -113,7 +161,7 @@ public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClicke
         shoeItemList.add(new ShoeItem(8,"Adidas Ultraboost", "ADIDAS", R.drawable.adidas_ultraboost, 15));
 
 
-    }
+    }*/
 
     @Override
     public void onCardClicked(ShoeItem shoe) {
@@ -155,4 +203,15 @@ public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClicke
     }
 
 
+    @Override
+    public void onShoeItemLoadSuccess(List<ShoeItem> shoeItemList) {
+        ShoeItemAdapter shoeItemAdapter = new ShoeItemAdapter(getActivity(), shoeItemList, this);
+        recyclerView.setAdapter(shoeItemAdapter);
+    }
+
+    @Override
+    public void onShoeItemLoadFailed(String message) {
+        Snackbar.make(mainLayout, message, Snackbar.LENGTH_LONG).show();
+
+    }
 }
