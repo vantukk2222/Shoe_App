@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
@@ -50,7 +51,7 @@ public class information_person extends AppCompatActivity {
         dateButton = findViewById(R.id.datePickerButton);
         edtPhoneChange = findViewById(R.id.edtPhoneChange);
         dateButton.setText(getTodaysDate());
-        
+
         boolean gender = radioM.isChecked();
 
 
@@ -100,10 +101,9 @@ public class information_person extends AppCompatActivity {
                                 // Thông báo cho người dùng đăng ký thành công và chuyển sang trang đăng nhập
                                 Intent i = new Intent(information_person.this, MainActivity.class);
                                 startActivity(i);
-                                SharedPreferences sharedPreferences = getSharedPreferences("MyPrefsFile", MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putBoolean("isLoggedIn", true);
-                                editor.apply();
+                                // Lưu phiên đăng nhập của user
+                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                preferences.edit().putString("uid", user.getUid()).apply();
                                 mDialog.dismiss();
                             } else {
                                 Toast.makeText(information_person.this, "Đã xảy ra lỗi gì rồi!", Toast.LENGTH_SHORT).show();

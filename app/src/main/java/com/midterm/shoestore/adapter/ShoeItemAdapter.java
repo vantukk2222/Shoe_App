@@ -23,8 +23,8 @@ public class ShoeItemAdapter extends RecyclerView.Adapter<ShoeItemAdapter.ShoeIt
 
 
     private List<ShoeItem> shoeItemList;
-    private Context context;
-    private ShoeClickedListeners shoeClickedListeners;
+    private final Context context;
+    private final ShoeClickedListeners shoeClickedListeners;
     private List<ShoeItem> filteredList; // danh sách đã được lọc
 
     public ShoeItemAdapter(Context context, List<ShoeItem> shoeItemList, ShoeClickedListeners shoeClickedListeners){
@@ -93,9 +93,12 @@ public class ShoeItemAdapter extends RecyclerView.Adapter<ShoeItemAdapter.ShoeIt
 
 
     public class ShoeItemViewHolder extends RecyclerView.ViewHolder{
-        private ImageView shoeImageView , addToCartBtn;
-        private TextView shoeNameTv, shoeBrandNameTv, shoePriceTv;
-        private CardView cardView;
+        private final ImageView shoeImageView;
+        private ImageView addToCartBtn;
+        private final TextView shoeNameTv;
+        private final TextView shoeBrandNameTv;
+        private final TextView shoePriceTv;
+        private final CardView cardView;
         public ShoeItemViewHolder(@NonNull View itemView) {
             super(itemView);
             shoeImageView = itemView.findViewById(R.id.eachShoeIv);

@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Message;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -17,10 +19,17 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.midterm.shoestore.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -38,9 +47,9 @@ public class LoginActivity extends AppCompatActivity {
         btn_reg = findViewById(R.id.txt_reg);
         mAuth = FirebaseAuth.getInstance();
         // Kiểm tra đăng nhập trong phương thức onCreate() của Activity đăng nhập
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefsFile", MODE_PRIVATE);
-        boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
-        if (isLoggedIn) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String uid = preferences.getString("uid", "");
+        if(!uid.isEmpty()) {
             // Chuyển người dùng đến Activity chính của ứng dụng
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -57,6 +66,40 @@ public class LoginActivity extends AppCompatActivity {
 //            }
 //        });
 
+        //Check send data
+//        btn_login.setOnClickListener(view -> {
+//            FirebaseApp.initializeApp(this);
+//            FirebaseDatabase database = FirebaseDatabase.getInstance();
+//
+//            DatabaseReference messagesRef = database.getReference("messages");
+//
+//            messagesRef.setValue("Hello Firebase");
+//
+//            Toast.makeText(LoginActivity.this, "Gửi dữ liệu nha!", Toast.LENGTH_SHORT).show();
+//
+//        });
+        //Check connected?
+//        btn_login.setOnClickListener(view -> {
+//            DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+//            connectedRef.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    boolean connected = dataSnapshot.getValue(Boolean.class);
+//                    if (connected) {
+//                        Log.e("CHECK DB", "Connected to Firebase Realtime Database");
+//                    } else {
+//                        Log.e("CHECK DB", "Disconnected from Firebase Realtime Database");
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//                    Log.e("CHECK DB", "Listener was cancelled");
+//                }
+//            });
+//
+//
+//        });
         btn_login.setOnClickListener(view -> {
             String strEmail = email.getText().toString();
             String strPass = password.getText().toString();
@@ -68,16 +111,22 @@ public class LoginActivity extends AppCompatActivity {
                         mDialog.setMessage("Login....");
                         mDialog.show();
                         LoginActivity.this.finish();
+                        // Lấy thông tin của user đã đăng nhập
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                        // Lưu phiên đăng nhập của user
+//                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        preferences.edit().putString("uid", user.getUid()).apply();
+
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
-                        LoginActivity.this.finish();
                         mDialog.dismiss();
 
-                        // Lưu trạng thái đăng nhập thành công vào SharedPreferences
-                        SharedPreferences sharedPreferences1 = getSharedPreferences("MyPrefsFile", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences1.edit();
-                        editor.putBoolean("isLoggedIn", true);
-                        editor.apply();
+//                        // Lưu trạng thái đăng nhập thành công vào SharedPreferences
+//                        SharedPreferences sharedPreferences1 = getSharedPreferences("MyPrefsFile", MODE_PRIVATE);
+//                        SharedPreferences.Editor editor = sharedPreferences1.edit();
+//                        editor.putBoolean("isLoggedIn", true);
+//                        editor.apply();
 
                     } else {
                         Toast.makeText(LoginActivity.this, "Đăng nhập thất bại!", Toast.LENGTH_SHORT).show();

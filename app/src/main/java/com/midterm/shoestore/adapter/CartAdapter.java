@@ -17,7 +17,7 @@ import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHodler> {
 
-    private CartClickedListeners cartClickedListeners;
+    private final CartClickedListeners cartClickedListeners;
     private List<ShoeCart> shoeCartList;
 
     public CartAdapter(CartClickedListeners cartClickedListeners) {
@@ -81,10 +81,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHodler
 
     public class CartViewHodler extends RecyclerView.ViewHolder {
 
-        private TextView shoeNameTv, shoeBrandNameTv, shoePriceTv, shoeQuantity;
-        private ImageView deleteShoeBtn;
-        private ImageView shoeImageView;
-        private ImageButton addQuantityBtn, minusQuantityBtn;
+        private final TextView shoeNameTv;
+        private final TextView shoeBrandNameTv;
+        private final TextView shoePriceTv;
+        private final TextView shoeQuantity;
+        private final ImageView deleteShoeBtn;
+        private final ImageView shoeImageView;
+        private final ImageButton addQuantityBtn;
+        private final ImageButton minusQuantityBtn;
 
         public CartViewHodler(@NonNull View itemView) {
             super(itemView);

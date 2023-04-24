@@ -1,9 +1,13 @@
 package com.midterm.shoestore.views;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +27,15 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.midterm.shoestore.R;
+import com.midterm.shoestore.model.users;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -44,9 +56,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dialog = new Dialog(this);
 
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String uid = preferences.getString("uid", "");
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+        TextView name_navheader = headerView.findViewById(R.id.name_navheader);
+        TextView phone_navheader = headerView.findViewById(R.id.phone_navheader);
+
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
+        DatabaseReference userRef = usersRef.child(uid);
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Check dữ liệu có tồn tại không
+                if (snapshot.exists()) {
+                    // Lấy giá trị dữ liệu user tương ứng
+                    users user = snapshot.getValue(users.class);
+//                    Toast.makeText(MainActivity.this, "Welcome back - "+user.getName(), Toast.LENGTH_SHORT).show();
+                    name_navheader.setText(user.getName());
+                    phone_navheader.setText(user.getPhoneno());
+                    // Thực hiện xử lý với dữ liệu user vừa lấy được ở đây.
+                } else {
+                    // Dữ liệu không tồn tại
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Xử lý khi có lỗi xảy ra.
+            }
+        });
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerlayout, toolbar, R.string.open_nav, R.string.close_nav);
 
@@ -76,15 +119,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 openbuydialog();
             }
         });
-//        userImageView.setOnClickListener(view -> {
-//            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefsFile", MODE_PRIVATE);
-//            SharedPreferences.Editor editor = sharedPreferences.edit();
-//            editor.clear();
-//            editor.apply();
-//
-//            MainActivity.this.finish();
-//            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-//        });
+
 
     }
 
@@ -188,12 +223,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_share:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShareFragment()).commit();
                 break;
+            case R.id.nav_cart:
+
+                Intent newintent = new Intent(getApplicationContext(), show_list_cart.class);
+
+                startActivity(newintent);
+                break;
             case R.id.nav_logout:
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                preferences.edit().remove("uid").apply();
+
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+                finish(); // Đóng Activity hiện tại
+
                 Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
                 break;
         }
         drawerlayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
 }
