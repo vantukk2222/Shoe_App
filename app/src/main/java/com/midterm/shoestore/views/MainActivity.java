@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         Toolbar toolbar = findViewById(R.id.toolbar); //Ignore red line errors
         setSupportActionBar(toolbar);
         searchView = findViewById(R.id.searchView_home);
@@ -59,8 +62,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String uid = preferences.getString("uid", "");
 
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        Menu menu = navigationView.getMenu();
+        MenuItem cartItem = menu.findItem(R.id.nav_cart);
+        MenuItem adminItem = menu.findItem(R.id.nav_admin);
+        MenuItem cartmanagementItem = menu.findItem(R.id.nav_cart_management);
+        if (uid.equals("admin")) {
+            cartItem.setVisible(false);
+        }
+        else if(!uid.isEmpty()) {
+            adminItem.setVisible(false);
+            cartmanagementItem.setVisible(false);
+        }
 
         View headerView = navigationView.getHeaderView(0);
         TextView name_navheader = headerView.findViewById(R.id.name_navheader);
@@ -213,36 +228,74 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.nav_home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-                break;
-            case R.id.nav_settings:
-                Intent intent_setting = new Intent(getApplicationContext(), Main_Infor.class);
-                startActivity(intent_setting);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String uid = preferences.getString("uid", "");
+        if(uid.equals("admin")) {
 
-                break;
-            case R.id.nav_share:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShareFragment()).commit();
-                break;
-            case R.id.nav_cart:
+            switch (item.getItemId()) {
+                case R.id.nav_home:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+                    break;
+                case R.id.nav_settings:
+                    Intent intent_setting = new Intent(getApplicationContext(), Main_Infor.class);
+                    startActivity(intent_setting);
 
-                Intent intent_cart = new Intent(getApplicationContext(), show_list_cart.class);
+                    break;
+                case R.id.nav_share:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShareFragment()).commit();
+                    break;
+                case R.id.nav_cart:
 
-                startActivity(intent_cart);
-                break;
-            case R.id.nav_logout:
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                preferences.edit().remove("uid").apply();
+                    Intent intent_cart = new Intent(getApplicationContext(), show_list_cart.class);
 
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish(); // Đóng Activity hiện tại
+                    startActivity(intent_cart);
+                    break;
+                case R.id.nav_logout:
+                    //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    preferences.edit().remove("uid").apply();
 
-                Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
-                break;
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish(); // Đóng Activity hiện tại
+
+                    Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
+                    break;
+            }
         }
+        else if(!uid.isEmpty()) {
+            switch (item.getItemId()) {
+                case R.id.nav_home:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+                    break;
+                case R.id.nav_settings:
+                    Intent intent_setting = new Intent(getApplicationContext(), Main_Infor.class);
+                    startActivity(intent_setting);
+
+                    break;
+                case R.id.nav_share:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShareFragment()).commit();
+                    break;
+                case R.id.nav_cart:
+
+                    Intent intent_cart = new Intent(getApplicationContext(), show_list_cart.class);
+
+                    startActivity(intent_cart);
+                    break;
+                case R.id.nav_logout:
+                    //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    preferences.edit().remove("uid").apply();
+
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish(); // Đóng Activity hiện tại
+
+                    Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+
         drawerlayout.closeDrawer(GravityCompat.START);
         return true;
     }

@@ -17,9 +17,17 @@
         android:icon="@drawable/add_to_cart"
         android:title="Giỏ hàng" />
     <item
+        android:id="@+id/nav_cart_management"
+        android:icon="@drawable/ic_baseline_shopping_cart_24"
+        android:title="Quản lý giỏ hàng" />
+    <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="Cài đặt" />
+    <item
+        android:id="@+id/nav_admin"
+        android:icon="@drawable/manage_icon"
+        android:title="Quản lý giày" />
 
 
     <item android:title="Profile">
@@ -43,4 +51,6 @@
                 android:title="Rate us" />
         </menu>
     </item>
+
+
 </menu>

@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         String uid = preferences.getString("uid", "");
         if(uid.equals("admin")) {
             // Chuyển người dùng đến Activity chính của ứng dụng
-            Intent intent = new Intent(this, AdminActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
@@ -145,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
 //                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         preferences.edit().putString("uid", "admin").apply();
 
-                        Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
                     else {
