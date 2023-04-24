@@ -64,17 +64,18 @@
                 android:text="Tổng: "
                 android:textSize="25sp"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textColor="#6C6C6C"
                 android:layout_weight="6"/>
             <TextView
                 android:id="@+id/tv_tienthanhtoan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0đ"
+                android:text="$0"
+                android:layout_marginEnd="10dp"
                 android:gravity="right"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                android:textColor="#D8393838"
+                android:textColor="#AA0E25"
                 android:layout_weight="2"/>
         </LinearLayout>
         <LinearLayout
