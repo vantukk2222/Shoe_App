@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "498123759297-jsj3ob90f00ejcskakqck6hvi9un5c3k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.midterm.shoestore",
+            "certificate_hash": "67126ddb0c939c49bc0474eb7536b8ee52dbce20"
+          }
+        },
+        {
           "client_id": "498123759297-tc7g171tjtghk9247sr8m32s932enssm.apps.googleusercontent.com",
           "client_type": 3
         }
