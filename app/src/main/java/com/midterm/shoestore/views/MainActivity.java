@@ -14,7 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,9 +26,11 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerlayout;
     private SearchView searchView;
     private Dialog dialog;
+    private FloatingActionButton editShoeBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,12 +74,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MenuItem cartItem = menu.findItem(R.id.nav_cart);
         MenuItem adminItem = menu.findItem(R.id.nav_admin);
         MenuItem cartmanagementItem = menu.findItem(R.id.nav_cart_management);
+        editShoeBtn = findViewById(R.id.editShoeBtn);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+
+
         if (uid.equals("admin")) {
             cartItem.setVisible(false);
+
         }
         else if(!uid.isEmpty()) {
             adminItem.setVisible(false);
             cartmanagementItem.setVisible(false);
+            editShoeBtn.setVisibility(View.GONE);
         }
 
         View headerView = navigationView.getHeaderView(0);
@@ -136,6 +147,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        FrameLayout frameLayout = findViewById(R.id.fragment_container);
+        editShoeBtn = frameLayout.findViewById(R.id.editShoeBtn);
+        editShoeBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, AdminActivity.class);
+            startActivity(intent);
+        });
 
     }
 
@@ -261,6 +278,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     finish(); // Đóng Activity hiện tại
 
                     Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.nav_admin:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
                     break;
             }
         }

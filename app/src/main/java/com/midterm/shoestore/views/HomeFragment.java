@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -100,15 +102,13 @@ public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClicke
 
         recyclerView = view.findViewById(R.id.mainRecyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         adapter = new ShoeItemAdapter(getActivity(), shoeItemList, this);
 
         //setUpList();
         loadItemFromFirebase();
         adapter.setShoeItemList(shoeItemList);
         recyclerView.setAdapter(adapter);
-
-
 
 
 
@@ -210,6 +210,7 @@ public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClicke
 
     @Override
     public void onShoeItemLoadSuccess(List<ShoeItem> shoeItemList) {
+        this.shoeItemList = shoeItemList;
         ShoeItemAdapter shoeItemAdapter = new ShoeItemAdapter(getActivity(), shoeItemList, this);
         recyclerView.setAdapter(shoeItemAdapter);
     }

@@ -10,7 +10,7 @@ public class ShoeItem implements Parcelable {
     private String shoeImage;
     private String shoePrice;
 
-    public ShoeItem(String shoe_ID, String shoeName, String shoeBrandName, String shoeImage, String shoePrice) {
+    public ShoeItem(String shoeName, String shoeBrandName, String shoeImage, String shoePrice) {
         this.shoe_ID = shoe_ID;
         this.shoeName = shoeName;
         this.shoeBrandName = shoeBrandName;

@@ -1,6 +1,8 @@
 package com.midterm.shoestore.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.midterm.shoestore.R;
 import com.midterm.shoestore.model.ShoeItem;
 import com.midterm.shoestore.views.HomeFragment;
@@ -26,11 +29,15 @@ public class ShoeItemAdapter extends RecyclerView.Adapter<ShoeItemAdapter.ShoeIt
     private final Context context;
     private final ShoeClickedListeners shoeClickedListeners;
     private List<ShoeItem> filteredList; // danh sách đã được lọc
+    private String uid;
+
 
     public ShoeItemAdapter(Context context, List<ShoeItem> shoeItemList, ShoeClickedListeners shoeClickedListeners){
         this.context = context;
         this.shoeItemList = shoeItemList;
         this.shoeClickedListeners = shoeClickedListeners;
+
+
     }
     public void setShoeItemList(List<ShoeItem> shoeItemList){
         this.shoeItemList = shoeItemList;
@@ -70,7 +77,7 @@ public class ShoeItemAdapter extends RecyclerView.Adapter<ShoeItemAdapter.ShoeIt
 
         //Glide.with(context).load(shoeItemList.get(position).getShoeImage()).into(holder.shoeImageView);
 
-        holder.shoePriceTv.setText(new StringBuilder("$").append(shoeItemList.get(position).getShoePrice()));
+        holder.shoePriceTv.setText(new StringBuilder("đ").append(shoeItemList.get(position).getShoePrice()));
         holder.shoeNameTv.setText(new StringBuilder().append(shoeItemList.get(position).getShoeName()));
         holder.shoeBrandNameTv.setText(new StringBuilder().append(shoeItemList.get(position).getShoeBrandName()));
 
@@ -80,6 +87,16 @@ public class ShoeItemAdapter extends RecyclerView.Adapter<ShoeItemAdapter.ShoeIt
                 shoeClickedListeners.onAddToCartBtnClicked(shoeItem);
             }
         });*/
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.context.getApplicationContext());
+        this.uid = preferences.getString("uid", "");
+        if (uid.equals("admin")) {
+            holder.addToCartBtn.setVisibility(View.GONE);
+
+
+        }
+        else if(!uid.isEmpty()) {
+            holder.addToCartBtn.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -99,19 +116,19 @@ public class ShoeItemAdapter extends RecyclerView.Adapter<ShoeItemAdapter.ShoeIt
         private final TextView shoeBrandNameTv;
         private final TextView shoePriceTv;
         private final CardView cardView;
+
         public ShoeItemViewHolder(@NonNull View itemView) {
             super(itemView);
+
             shoeImageView = itemView.findViewById(R.id.eachShoeIv);
             shoeNameTv = itemView.findViewById(R.id.eachShoeName);
             shoePriceTv = itemView.findViewById(R.id.eachShoePriceTv);
             shoeBrandNameTv = itemView.findViewById(R.id.eachShoeBrandNameTv);
 
             cardView = itemView.findViewById(R.id.eachShoeCardView);
-            //addToCartBtn = itemView.findViewById(R.id.eachShoeAddToCartBtn);
-            //shoeNameTv = itemView.findViewById(R.id.eachShoeName);
-            //shoeImageView = itemView.findViewById(R.id.eachShoeIv);
-            //shoeBrandNameTv = itemView.findViewById(R.id.eachShoeBrandNameTv);
-            //shoePriceTv = itemView.findViewById(R.id.eachShoePriceTv);
+            addToCartBtn = itemView.findViewById(R.id.eachShoeAddToCartBtn);
+
+
         }
     }
 
