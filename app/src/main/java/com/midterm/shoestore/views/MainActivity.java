@@ -96,7 +96,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     phone_navheader.setText(user.getPhoneno());
                     // Thực hiện xử lý với dữ liệu user vừa lấy được ở đây.
                 } else {
-                    // Dữ liệu không tồn tại
+                    name_navheader.setText("Admin Panel");
+                    phone_navheader.setText("0965770497");
                 }
             }
 
