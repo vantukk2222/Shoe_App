@@ -23,6 +23,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.midterm.shoestore.R;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Main_Infor extends AppCompatActivity {
     private TextView txt_change_pass_st, tvleftinfor_st, txtName_st, txtMail_st, txtDoB_st, txtGender_st, txtPhoneNumber_st, btn_logout_settings;
     private LinearLayout layout_to_check_cart_st, layout_to_check_shoes_st, layout_to_edit_profile, layout_to_cart_profile, layout_to_checkout_profile, layout_to_changePW_st;
@@ -127,6 +130,7 @@ public class Main_Infor extends AppCompatActivity {
         //Đơn hàng User
         layout_to_checkout_profile.setOnClickListener(view ->{
             Toast.makeText(this, "Giỏ hàng: In progress", Toast.LENGTH_SHORT).show();
+            getOrderDetails();
         });
 
         //Quản lý giày Admin
@@ -166,4 +170,46 @@ public class Main_Infor extends AppCompatActivity {
 
 
     }
+    public void getOrderDetails() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String uid = preferences.getString("uid", "");
+        DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference("orders");
+
+        // Duyệt qua tất cả các order
+        ordersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
+                    String orderId = orderSnapshot.child("orderId").getValue(String.class);
+                    String status = orderSnapshot.child("status").getValue(String.class);
+                    String userID = orderSnapshot.child("userId").getValue(String.class);
+
+                    // Kiểm tra nếu status = "pending"
+                    if (status != null && status.equals("pending") && userID.equals(uid)) {
+                        // Lấy ra các thông tin cần thiết của order
+                        Map<String, Integer> shoeQuantities = new HashMap<>();
+                        for (DataSnapshot shoeSnapshot : orderSnapshot.child("shoeQuantities").getChildren()) {
+                            String shoeId = shoeSnapshot.getKey();
+                            int quantity = shoeSnapshot.getValue(Integer.class);
+
+                            shoeQuantities.put(shoeId, quantity);
+                        }
+
+                        String timePlaced = orderSnapshot.child("timePlaced").getValue(String.class);
+
+                        // In ra console các thông tin của order
+                        Log.e("ORDER_DETAILS", "orderId: " + orderId);
+                        Log.e("ORDER_DETAILS", "shoeQuantities: " + shoeQuantities.toString());
+                        Log.e("ORDER_DETAILS", "timePlaced: " + timePlaced);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("ORDER_DETAILS", "loadOrders:onCancelled", error.toException());
+            }
+        });
+    }
+
 }

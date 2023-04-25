@@ -96,7 +96,7 @@ public class show_list_cart extends AppCompatActivity {
                         String shoeImage = snapshot.child("shoeImage").getValue(String.class);
                         String shoeName = snapshot.child("shoeName").getValue(String.class);
                         String str_shoePrice = snapshot.child("shoePrice").getValue(String.class);
-                        int shoePrice = Integer.valueOf(str_shoePrice);
+                        int shoePrice = Integer.valueOf(str_shoePrice.replace(",",""));
 
                         total[0] += shoePrice * quantity;
                         tv_tienthanhtoan.setText("$"+total[0]);
@@ -155,7 +155,7 @@ public class show_list_cart extends AppCompatActivity {
                         // Chuyển đổi đối tượng Date thành định dạng ngày tháng năm giờ phút giây
                         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                         String formattedDate = dateFormat.format(date);
-                        Order order = new Order(orderId, userId, status, Integer.toString(total[0]), shoeQuantities, formattedDate);
+                        Order order = new Order(orderId, userId, status, Integer.toString(total[0]), shoeQuantities, formattedDate, "");
 
                         // Lưu đơn hàng vào Realtime Database
                         DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("orders");
