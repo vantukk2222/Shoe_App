@@ -57,7 +57,6 @@ public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClicke
     private String mParam2;
     private List<ShoeItem> shoeItemList;
     private List<ShoeItem> shoeItemListFilter;
-    //private RecyclerView recyclerView;
     private String searchQuery = "";
 
     private ShoeItemAdapter adapter;
@@ -109,8 +108,6 @@ public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClicke
         loadItemFromFirebase();
         adapter.setShoeItemList(shoeItemList);
         recyclerView.setAdapter(adapter);
-
-
 
     }
 

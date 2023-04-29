@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         Menu menu = navigationView.getMenu();
         MenuItem cartItem = menu.findItem(R.id.nav_cart);
+        MenuItem checkoutcartItem = menu.findItem(R.id.nav_checkout_cart);
         MenuItem adminItem = menu.findItem(R.id.nav_admin);
         MenuItem cartmanagementItem = menu.findItem(R.id.nav_cart_management);
         editShoeBtn = findViewById(R.id.editShoeBtn);
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (uid.equals("admin")) {
             cartItem.setVisible(false);
+            checkoutcartItem.setVisible(false);
 
         }
         else if(!uid.isEmpty()) {
@@ -257,7 +259,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case R.id.nav_settings:
                     Intent intent_setting = new Intent(getApplicationContext(), Main_Infor.class);
                     startActivity(intent_setting);
-
                     break;
                 case R.id.nav_share:
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShareFragment()).commit();
@@ -296,6 +297,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
                 case R.id.nav_share:
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShareFragment()).commit();
+                    break;
+                case R.id.nav_checkout_cart:
+                    Toast.makeText(this, "Giỏ hàng: In progress", Toast.LENGTH_SHORT).show();
+                    Intent intent_check_cart = new Intent(this, Checkout_Activity.class);
+                    startActivity(intent_check_cart);
                     break;
                 case R.id.nav_cart:
 

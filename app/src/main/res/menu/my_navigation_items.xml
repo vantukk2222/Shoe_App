@@ -17,6 +17,10 @@
         android:icon="@drawable/add_to_cart"
         android:title="Giỏ hàng" />
     <item
+        android:id="@+id/nav_checkout_cart"
+        android:icon="@drawable/ic_baseline_shopping_cart_checkout_24"
+        android:title="Đơn hàng" />
+    <item
         android:id="@+id/nav_cart_management"
         android:icon="@drawable/ic_baseline_shopping_cart_24"
         android:title="Quản lý giỏ hàng" />
