@@ -30,11 +30,15 @@
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/layout/nav_header.xml" value="0.20217588395285585" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/layout/sort_filter_dialog.xml" value="0.20436083796494228" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Android_CK/app/src/main/res/menu/my_navigation_items.xml" value="0.20521590423257802" />
+        <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/drawable-xxhdpi/ic_baseline_shopping_cart_24.xml" value="0.1785" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/drawable/button_out.xml" value="0.1785" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/drawable/ic_baseline_check_24.xml" value="0.1785" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/drawable/ic_baseline_pen_24.xml" value="0.1785" />
+        <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/drawable/ic_baseline_shopping_cart_24.xml" value="0.1785" />
+        <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/drawable/ic_baseline_shopping_cart_checkout_24.xml" value="0.1785" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/drawable/radio_selector.xml" value="0.1785" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/drawable/radio_text_color_selector.xml" value="0.1785" />
+        <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/drawable/radio_text_color_selector_ship.xml" value="0.1785" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/drawable/top_button_background.xml" value="0.1785" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/drawable/white_background.xml" value="0.1785" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/layout/activity_admin.xml" value="0.22826086956521738" />
@@ -49,9 +53,11 @@
         <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/layout/activity_main_infor.xml" value="0.22826086956521738" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/layout/add_to_cart.xml" value="0.22826086956521738" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/layout/checkout_item.xml" value="0.264" />
-        <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/layout/each_cart_item.xml" value="0.1408514492753623" />
+        <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/layout/detail_checkout_item.xml" value="0.22826086956521738" />
+        <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/layout/each_cart_item.xml" value="0.264" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/layout/each_checkout_item.xml" value="0.22826086956521738" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/layout/each_shoe.xml" value="0.22826086956521738" />
+        <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/layout/fragment_detail_checkout.xml" value="0.22826086956521738" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/layout/fragment_home2.xml" value="0.22826086956521738" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/layout/fragment_orders.xml" value="0.22826086956521738" />
         <entry key="..\:/DHBK-DHDN/Nam3-II/Shoe_App/app/src/main/res/layout/layout_show_list_cart.xml" value="0.22826086956521738" />

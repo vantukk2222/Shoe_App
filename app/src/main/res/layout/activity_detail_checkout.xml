@@ -5,121 +5,142 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/radio_selector"
-    android:paddingTop="5dp"
     tools:context=".views.detail_checkoutActivity"
     android:orientation="vertical">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:background="#747ED6">
 
         <TextView
-            android:layout_marginStart="-8dp"
             android:id="@+id/tvleft_co_item"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:background="@android:color/white"
-            android:drawableLeft="@drawable/ic_baseline_chevron_left_24"
-            tools:layout_constraintBottom_toBottomOf="parent"
-            tools:layout_constraintStart_toStartOf="parent"
-            tools:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="30dp"
+            android:layout_marginStart="-8dp"
+            android:background="@drawable/ic_baseline_chevron_left_24"
+            android:backgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
+            android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:background="@android:color/white"
             android:gravity="center"
             android:paddingLeft="10dp"
             android:text="Đơn mua"
-            android:textSize="24sp"
+            android:textSize="20sp"
+            android:textColor="@color/white"
             android:textStyle="bold"
-            tools:layout_constraintBottom_toBottomOf="parent"
-            tools:layout_constraintStart_toEndOf="@+id/tvleft_co_item"
-            tools:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvleft_co_item"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/img_checkcart_co_item"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            tools:layout_constraintBottom_toBottomOf="parent"
-            tools:layout_constraintEnd_toEndOf="parent"
-            tools:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/ic_baseline_shopping_cart_24" />
-
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/ic_baseline_shopping_cart_24"
+            android:backgroundTint="@color/white"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
 
-        <TextView
-            android:id="@+id/textview_order_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mã đơn hàng #12345"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/textview_order_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="Thời gian đặt hàng: 25 Mar 2023" />
-        <TextView
-            android:id="@+id/textview_placed_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="Thời gian giao hàng: 27 Mar 2023" />
-
-        <!-- Horizontal line separator -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black" />
-
-        <TextView
-            android:id="@+id/textview_order_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:paddingTop="16dp"
-            android:text="Trạng thái: Đã giao" />
-
-        <TextView
-            android:id="@+id/textview_order_total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:paddingTop="16dp"
-            android:text="Tổng tiền: $100.00" />
-
-        <!-- Horizontal line separator -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black"
-            android:layout_marginTop="16dp"/>
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:text="Sản phẩm" />
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_ordered_items"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"/>
+            <TextView
+                android:id="@+id/textview_order_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mã đơn hàng #12345"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textview_order_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:text="Thời gian đặt hàng: 25 Mar 2023" />
+            <TextView
+                android:id="@+id/textview_placed_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:text="Thời gian giao hàng: 27 Mar 2023" />
+
+            <!-- Horizontal line separator -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black" />
+
+            <TextView
+                android:id="@+id/textview_order_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:paddingTop="16dp"
+                android:text="Trạng thái: Đã giao" />
+
+            <TextView
+                android:id="@+id/textview_order_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:paddingTop="16dp"
+                android:textColor="@color/black"
+                android:text="Tổng tiền: $100.00" />
+            <Button
+                android:id="@+id/cancel_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#EDEDED"
+                android:textColor="#FF0000"
+                android:text="Hủy"/>
+            <!-- Horizontal line separator -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                android:layout_marginTop="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:text="Sản phẩm"
+                android:textColor="@color/black" />
+
+            <GridView
+                android:id="@+id/RecyView_DSShoes_detail_checkout"
+                android:background="@color/white"
+                android:divider="#000000"
+                android:dividerHeight="1dp"
+                android:horizontalSpacing="5dp"
+                android:verticalSpacing="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+            </GridView>
+
+        </LinearLayout>
 
 </LinearLayout>

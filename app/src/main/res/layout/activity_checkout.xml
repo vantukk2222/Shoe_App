@@ -15,10 +15,11 @@
         <TextView
             android:id="@+id/tvleft_co"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:background="@drawable/ic_baseline_chevron_left_24"
             android:backgroundTint="@color/white"
-            android:paddingTop="10dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,7 +33,7 @@
             android:paddingLeft="10dp"
             android:text="Đơn mua"
             android:textColor="@color/white"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvleft_co"
@@ -63,47 +64,54 @@
             android:orientation="horizontal"
             android:layout_gravity="center_vertical"
             android:background="@color/white">
-            <CheckBox
-                android:id="@+id/ChoXacNhan"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:button="@null"
-                android:text="Chờ xác nhận"
-                android:textSize="18sp"
-                android:layout_marginLeft="10dp"
-                android:textColor="@drawable/radio_text_color_selector_ship"
-                android:padding="10dp"/>
-            <CheckBox
-                android:checked="true"
-                android:id="@+id/DangGiao"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:button="@null"
-                android:text="Đang giao"
-                android:textSize="18sp"
-                android:textColor="@drawable/radio_text_color_selector_ship"
-                android:layout_marginLeft="10dp"
-                android:padding="10dp"/>
-            <CheckBox
-                android:id="@+id/DaGiao"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:button="@null"
-                android:text="Đã giao"
-                android:textSize="18sp"
-                android:layout_marginLeft="10dp"
-                android:textColor="@drawable/radio_text_color_selector_ship"
-                android:padding="10dp"/>
-            <CheckBox
-                android:id="@+id/DaHuy"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:button="@null"
-                android:text="Đã hủy"
-                android:textSize="18sp"
-                android:layout_marginLeft="10dp"
-                android:textColor="@drawable/radio_text_color_selector_ship"
-                android:padding="10dp"/>
+            <RadioGroup
+                android:id="@+id/radioGroup_checkout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/ChoXacNhan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:text="@string/pending"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@drawable/radio_text_color_selector_ship"
+                    android:padding="10dp"/>
+                <RadioButton
+                    android:id="@+id/DaHuy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:text="@string/cancelled"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@drawable/radio_text_color_selector_ship"
+                    android:padding="10dp"/>
+                <RadioButton
+                    android:checked="true"
+                    android:id="@+id/DangGiao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:text="@string/delivering"
+                    android:textSize="18sp"
+                    android:textColor="@drawable/radio_text_color_selector_ship"
+                    android:layout_marginLeft="10dp"
+                    android:padding="10dp"/>
+                <RadioButton
+                    android:id="@+id/DaGiao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:text="@string/delivered"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@drawable/radio_text_color_selector_ship"
+                    android:padding="10dp"/>
+
+            </RadioGroup>
         </LinearLayout>
     </HorizontalScrollView>
     <FrameLayout

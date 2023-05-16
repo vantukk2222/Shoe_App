@@ -47,6 +47,7 @@ import butterknife.BindView;
  */
 public class ordersFragment extends Fragment implements OrderItemAdapter.OrderClickedListeners, OrderItemLoadListener {
 
+    private static String searchQuery;
     @BindView(R.id.orders_fragment)
     FrameLayout mainLayout;
     @BindView(R.id.main_orders_RecyclerView)
@@ -61,6 +62,8 @@ public class ordersFragment extends Fragment implements OrderItemAdapter.OrderCl
     private String mParam1;
     private String mParam2;
     private List<Order> orderItemList;
+    private List<Order> orderItemListFilter;
+    private String status;
 
     private OrderItemAdapter adapter;
 
@@ -71,14 +74,6 @@ public class ordersFragment extends Fragment implements OrderItemAdapter.OrderCl
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ordersFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static ordersFragment newInstance(String param1, String param2) {
         ordersFragment fragment = new ordersFragment();
@@ -95,6 +90,8 @@ public class ordersFragment extends Fragment implements OrderItemAdapter.OrderCl
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            status = getArguments().getString("MY_STRING");
+
         }
     }
 
@@ -123,11 +120,6 @@ public class ordersFragment extends Fragment implements OrderItemAdapter.OrderCl
 
     private void loadItemFromFirebase() {
         orderItemList = new ArrayList<>();
-        getOrderDetails();
-
-
-    }
-    public void getOrderDetails() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String uid = preferences.getString("uid", "");
         DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference("orders");
@@ -148,47 +140,43 @@ public class ordersFragment extends Fragment implements OrderItemAdapter.OrderCl
                 // xử lý khi có lỗi
             }
         });
-//        // Duyệt qua tất cả các order
-//        ordersRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
-//                    String orderId = orderSnapshot.child("orderId").getValue(String.class);
-//                    String status = orderSnapshot.child("status").getValue(String.class);
-//                    String userID = orderSnapshot.child("userId").getValue(String.class);
-//
-//                    // Kiểm tra nếu status = "pending"
-//                    if (status != null && status.equals("pending") && userID.equals(uid)) {
-//                        Order orderItem = orderSnapshot.getValue(Order.class);
-//                        orderItem.setOrderId(orderId);
-//                        orderItemList.add(orderItem);
-//                        // Lấy ra các thông tin cần thiết của order
-////                        Map<String, Integer> shoeQuantities = new HashMap<>();
-////                        for (DataSnapshot shoeSnapshot : orderSnapshot.child("shoeQuantities").getChildren()) {
-////                            String shoeId = shoeSnapshot.getKey();
-////                            int quantity = shoeSnapshot.getValue(Integer.class);
-////
-////                            shoeQuantities.put(shoeId, quantity);
-////                        }
-////
-////                        String timePlaced = orderSnapshot.child("timePlaced").getValue(String.class);
-//
-//                        // In ra console các thông tin của order
-////                        Log.e("ORDER_DETAILS", "orderId: " + orderId);
-////                        Log.e("ORDER_DETAILS", "shoeQuantities: " + shoeQuantities.toString());
-////                        Log.e("ORDER_DETAILS", "timePlaced: " + timePlaced);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Log.e("ORDER_DETAILS", "loadOrders:onCancelled", error.toException());
-//            }
-//        });
+
+
     }
+
+    private void initializeVariables() {
+        orderItemList = new ArrayList<>();
+        OrderItemLoadListener = this;
+    }
+
     @Override
     public void onCardClicked(Order order) {
+    }
+    public void onSearchQueryChanged(String query) {
+        searchQuery = query;
+        updateItemList();
+    }
+
+    private void updateItemList() {
+        if (searchQuery.isEmpty()) {
+            // Nếu không có từ khóa tìm kiếm, hiển thị toàn bộ danh sách
+            orderItemList = orderItemListFilter;
+        } else {
+            // Nếu có từ khóa tìm kiếm, lọc danh sách
+            orderItemListFilter = filterItemListByKeyword(orderItemList, searchQuery);
+        }
+        adapter.updateList(orderItemListFilter);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private List<Order> filterItemListByKeyword(List<Order> originalList, String keyword) {
+        List<Order> filteredList = new ArrayList<>();
+        for (Order item : originalList) {
+            if (item.getStatus().toLowerCase().contains(keyword.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+        return filteredList;
     }
 
     @Override
@@ -203,8 +191,4 @@ public class ordersFragment extends Fragment implements OrderItemAdapter.OrderCl
         Snackbar.make(mainLayout, message, Snackbar.LENGTH_LONG).show();
     }
 
-    private void initializeVariables() {
-        orderItemList = new ArrayList<>();
-        OrderItemLoadListener = this;
-    }
 }

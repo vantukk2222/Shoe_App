@@ -299,8 +299,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShareFragment()).commit();
                     break;
                 case R.id.nav_checkout_cart:
+
                     Toast.makeText(this, "Giỏ hàng: In progress", Toast.LENGTH_SHORT).show();
-                    Intent intent_check_cart = new Intent(this, Checkout_Activity.class);
+                    Intent intent_check_cart = new Intent(getApplicationContext(), Checkout_Activity.class);
                     startActivity(intent_check_cart);
                     break;
                 case R.id.nav_cart:

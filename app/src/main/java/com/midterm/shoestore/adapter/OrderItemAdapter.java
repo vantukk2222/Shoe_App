@@ -3,12 +3,15 @@ package com.midterm.shoestore.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -26,12 +29,12 @@ import com.midterm.shoestore.model.Order;
 import com.midterm.shoestore.model.ShoeItem;
 import com.midterm.shoestore.views.detail_checkoutActivity;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.OrderItemViewHolder> {
-
 
     private List<Order> OrderItemList;
     private final Context context;
@@ -43,8 +46,6 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
         this.context = context;
         this.OrderItemList = shoeItemList;
         this.OrderClickedListeners = OrderClickedListeners;
-
-
     }
     public void setOrderItemList(List<Order> OrderItemList){
         this.OrderItemList = OrderItemList;
@@ -52,13 +53,15 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
 
     @NonNull
     @Override
-    public OrderItemAdapter.OrderItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public OrderItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.checkout_item , parent , false);
-        return new OrderItemAdapter.OrderItemViewHolder(view);
+//        TextView textview_ordered_product_detail = view.findViewById(R.id.textview_ordered_product_detail);
+//        textview_ordered_product_detail.setVisibility(View.GONE);
+        return new OrderItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrderItemAdapter.OrderItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OrderItemViewHolder holder, int position) {
         Order OrderItem = OrderItemList.get(position);
 
         //holder.shoeNameTv.setText(shoeItem.getShoeName());
@@ -75,6 +78,9 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
 
         holder.textview_ordered_product_detail.setOnClickListener(view -> {
             Intent intent = new Intent(context, detail_checkoutActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("shoe_quantities", (Serializable) OrderItem.getShoeQuantities());
+            intent.putExtra("bundle_key", bundle);
             intent.putExtra("Order", OrderItem);
             context.startActivity(intent);
         });
@@ -102,6 +108,7 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
                 if (dataSnapshot.exists()) {
                     // Lấy ra Shoes được trả về từ dataSnapshot
                     ShoeItem shoes = dataSnapshot.getChildren().iterator().next().getValue(ShoeItem.class);
+                    holder.textview_ordered_ID_cart.setText("ID: "+ OrderItem.getOrderId());
                     Glide.with(context).load(shoes.getShoeImage()).into(holder.imageview_ordered_product);
                     holder.textview_ordered_product_name.setText(shoes.getShoeName());
                     holder.textview_ordered_product_price.setText("Giá $" + shoes.getShoePrice());
@@ -172,12 +179,12 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
         private final TextView textview_ordered_product_price;
         private final TextView textview_ordered_product_quantity;
         private final TextView textview_ordered_product_detail;
-
+        private final TextView textview_ordered_ID_cart;
         private final CardView cardView;
 
         public OrderItemViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            textview_ordered_ID_cart = itemView.findViewById(R.id.textview_ordered_ID_cart);
             imageview_ordered_product = itemView.findViewById(R.id.imageview_ordered_product);
             textview_ordered_product_name = itemView.findViewById(R.id.textview_ordered_product_name);
             textview_ordered_product_quantity = itemView.findViewById(R.id.textview_ordered_product_quantity);
@@ -194,6 +201,9 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
         void onCardClicked(Order order);
         //void onAddToCartBtnClicked(ShoeItem shoeItem);
     }
-
+    public void updateList(List<Order> newItems) {
+        OrderItemList = newItems;
+        notifyDataSetChanged();
+    }
 
 }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/checkout_item_adapter"
+    android:id="@+id/detail_checkout_item_adapter"
     android:layout_marginStart="5dp"
     android:layout_marginBottom="8dp"
     android:layout_marginEnd="5dp"
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:padding="5dp">
         <ImageView
-            android:id="@+id/imageview_ordered_product"
+            android:id="@+id/detail_imageview_ordered_product"
             android:layout_width="95dp"
             android:layout_height="120dp"
             android:scaleType="centerCrop"
@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/detail_linearLayout2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -31,32 +31,20 @@
             android:paddingLeft="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/imageview_ordered_product"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.108">
+            app:layout_constraintStart_toEndOf="@+id/detail_imageview_ordered_product"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textview_ordered_ID_cart"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:text="ID:"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textview_ordered_product_name"
+                android:id="@+id/detail_textview_ordered_product_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tên sản phẩm"
-                android:textColor="@color/black"
                 android:textSize="18sp"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textview_ordered_product_price"
+                android:id="@+id/detail_textview_ordered_product_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Giá: $20.00"
@@ -64,7 +52,7 @@
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/textview_ordered_product_quantity"
+                android:id="@+id/detail_textview_ordered_product_quantity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Số lượng: 2"
@@ -73,18 +61,6 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/textview_ordered_product_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Xem thêm sản phẩm"
-            android:gravity="center"
-            android:background="#828AC1"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-      </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -8,6 +8,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="timkiem">Tìm kiếm ở đây</string>
     <string name="cart">Giỏ hàng</string>
+    <string name="pending">Chờ xác nhận</string>
+    <string name="delivering">Đang giao</string>
+    <string name="delivered">Đã giao</string>
+    <string name="cancelled">Đã hủy</string>
 
 
 </resources>

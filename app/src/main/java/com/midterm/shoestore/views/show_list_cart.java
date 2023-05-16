@@ -92,9 +92,9 @@ public class show_list_cart extends AppCompatActivity {
                 shoesRef.child(shoeId).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String shoeBrandName = snapshot.child("shoeBrandName").getValue(String.class);
-                        String shoeImage = snapshot.child("shoeImage").getValue(String.class);
-                        String shoeName = snapshot.child("shoeName").getValue(String.class);
+//                        String shoeBrandName = snapshot.child("shoeBrandName").getValue(String.class);
+//                        String shoeImage = snapshot.child("shoeImage").getValue(String.class);
+//                        String shoeName = snapshot.child("shoeName").getValue(String.class);
                         String str_shoePrice = snapshot.child("shoePrice").getValue(String.class);
                         int shoePrice = Integer.valueOf(str_shoePrice.replace(",",""));
 
@@ -231,10 +231,10 @@ public class show_list_cart extends AppCompatActivity {
                     listquantity.add(shoeQuantity);
                     listID.add(shoeId);
                 }
+
                 donhangadapter = new AdapterCustom(show_list_cart.this, listID, listquantity);
                 recyclerView = findViewById(R.id.RecyView_DSShoes_listcart);
                 recyclerView.setAdapter(donhangadapter);
-
                 donhangadapter.notifyDataSetChanged();
 
                 // TODO: Sử dụng danh sách shoeItemList để hiển thị sản phẩm trong giỏ hàng của user
