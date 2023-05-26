@@ -82,6 +82,13 @@
                 android:textSize="14sp"
                 android:textColor="@color/black"
                 android:text="Thời gian giao hàng: 27 Mar 2023" />
+            <TextView
+                android:id="@+id/textview_cancelled_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:text="Thời gian hủy hàng: 27 Mar 2023" />
 
             <!-- Horizontal line separator -->
             <View
@@ -107,13 +114,35 @@
                 android:paddingTop="16dp"
                 android:textColor="@color/black"
                 android:text="Tổng tiền: $100.00" />
-            <Button
-                android:id="@+id/cancel_order"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#EDEDED"
-                android:textColor="#FF0000"
-                android:text="Hủy"/>
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/finish_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#EDEDED"
+                    android:layout_marginRight="20dp"
+                    android:textColor="#F68E1E"
+                    android:text="Đã giao"/>
+                <Button
+                    android:id="@+id/accept_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#EDEDED"
+                    android:layout_marginRight="20dp"
+                    android:textColor="#0A40CC"
+                    android:text="Chấp nhận"/>
+
+                <Button
+                    android:id="@+id/cancel_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#EDEDED"
+                    android:text="Hủy"
+                    android:textColor="#FF0000" />
+            </LinearLayout>
             <!-- Horizontal line separator -->
             <View
                 android:layout_width="match_parent"

@@ -8,10 +8,6 @@
         android:id="@+id/nav_home"
         android:icon="@drawable/ic_baseline_home_24"
         android:title="Trang chủ" />
-    <item
-        android:id="@+id/nav_message"
-        android:icon="@drawable/ic_baseline_message_24"
-        android:title="Tin nhắn" />
 
     <item
         android:id="@+id/nav_cart"
@@ -24,7 +20,7 @@
     <item
         android:id="@+id/nav_cart_management"
         android:icon="@drawable/ic_baseline_shopping_cart_24"
-        android:title="Quản lý giỏ hàng" />
+        android:title="Quản lý đơn hàng" />
     <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/ic_baseline_settings_24"

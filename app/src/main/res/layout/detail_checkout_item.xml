@@ -43,6 +43,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
+
             <TextView
                 android:id="@+id/detail_textview_ordered_product_price"
                 android:layout_width="match_parent"

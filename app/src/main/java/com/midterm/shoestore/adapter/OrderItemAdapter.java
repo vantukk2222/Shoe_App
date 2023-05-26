@@ -109,6 +109,7 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
                     // Lấy ra Shoes được trả về từ dataSnapshot
                     ShoeItem shoes = dataSnapshot.getChildren().iterator().next().getValue(ShoeItem.class);
                     holder.textview_ordered_ID_cart.setText("ID: "+ OrderItem.getOrderId());
+                    holder.detail_textview_ordered_userID.setText("UID: " + OrderItem.getUserId());
                     Glide.with(context).load(shoes.getShoeImage()).into(holder.imageview_ordered_product);
                     holder.textview_ordered_product_name.setText(shoes.getShoeName());
                     holder.textview_ordered_product_price.setText("Giá $" + shoes.getShoePrice());
@@ -153,13 +154,10 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
         });*/
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.context.getApplicationContext());
         this.uid = preferences.getString("uid", "");
-        if (uid.equals("admin")) {
-//            holder.addToCartBtn.setVisibility(View.GONE);
+        if (!uid.equals("admin")) {
+            holder.detail_textview_ordered_userID.setVisibility(View.GONE);
 
 
-        }
-        else if(!uid.isEmpty()) {
-//            holder.addToCartBtn.setVisibility(View.VISIBLE);
         }
     }
 
@@ -180,11 +178,13 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
         private final TextView textview_ordered_product_quantity;
         private final TextView textview_ordered_product_detail;
         private final TextView textview_ordered_ID_cart;
+        private final TextView detail_textview_ordered_userID;
         private final CardView cardView;
 
         public OrderItemViewHolder(@NonNull View itemView) {
             super(itemView);
             textview_ordered_ID_cart = itemView.findViewById(R.id.textview_ordered_ID_cart);
+            detail_textview_ordered_userID = itemView.findViewById(R.id.detail_textview_ordered_userID);
             imageview_ordered_product = itemView.findViewById(R.id.imageview_ordered_product);
             textview_ordered_product_name = itemView.findViewById(R.id.textview_ordered_product_name);
             textview_ordered_product_quantity = itemView.findViewById(R.id.textview_ordered_product_quantity);

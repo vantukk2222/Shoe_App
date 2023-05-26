@@ -45,7 +45,14 @@
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
-
+            <TextView
+                android:id="@+id/detail_textview_ordered_userID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="User ID: "
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
             <TextView
                 android:id="@+id/textview_ordered_product_name"
                 android:layout_width="match_parent"

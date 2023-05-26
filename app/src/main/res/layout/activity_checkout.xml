@@ -114,10 +114,12 @@
             </RadioGroup>
         </LinearLayout>
     </HorizontalScrollView>
+
     <FrameLayout
         android:id="@+id/fragment_container_orders"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:tag="FRAGMENT_CHECKOUT">
 
     </FrameLayout>
 </LinearLayout>

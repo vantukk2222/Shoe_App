@@ -9,7 +9,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +40,9 @@ import com.midterm.shoestore.adapter.OrderItemAdapter;
 import com.midterm.shoestore.model.Order;
 import com.midterm.shoestore.model.ShoeItem;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -49,14 +53,14 @@ public class detail_checkoutActivity extends AppCompatActivity {
 
     private Order order;
     private Map<String, Integer> shoeQuantities;
-    private TextView tvleft_co_item, textview_order_number, textview_order_date, textview_placed_date, textview_order_status, textview_order_total;
+    private TextView tvleft_co_item, textview_order_number, textview_order_date, textview_placed_date, textview_cancelled_date, textview_order_status, textview_order_total;
     private ImageView img_checkcart_co_item;
-    private Button cancel_order;
+    private Button cancel_order, accept_order, finish_order;
     private GridView RecyView_DSShoes_detail_checkout;
-
 
     private List<Integer> QuantityList;
     private List<String> ShoeIDList;
+    private String status;
 
     private CheckoutItemAdapterCustom adapter;
     @Override
@@ -66,6 +70,9 @@ public class detail_checkoutActivity extends AppCompatActivity {
         order = getIntent().getParcelableExtra("Order");
         Bundle bundle = getIntent().getBundleExtra("bundle_key");
         shoeQuantities = (Map<String, Integer>) bundle.getSerializable("shoe_quantities");
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        status = preferences.getString("status", "");
+        String uid = preferences.getString("uid", "");
 
         QuantityList = new ArrayList<>(shoeQuantities.values());
         ShoeIDList = new ArrayList<>(shoeQuantities.keySet());
@@ -74,10 +81,45 @@ public class detail_checkoutActivity extends AppCompatActivity {
         textview_order_number = findViewById(R.id.textview_order_number);
         textview_order_date = findViewById(R.id.textview_order_date);
         textview_placed_date = findViewById(R.id.textview_placed_date);
+        textview_cancelled_date = findViewById(R.id.textview_cancelled_date);
         textview_order_status = findViewById(R.id.textview_order_status);
         textview_order_total = findViewById(R.id.textview_order_total);
         img_checkcart_co_item = findViewById(R.id.img_checkcart_co_item);
         cancel_order = findViewById(R.id.cancel_order);
+        accept_order = findViewById(R.id.accept_order);
+        finish_order = findViewById(R.id.finish_order);
+
+        if(status.equals("pending"))
+        {
+            if(!uid.equals("admin"))
+            {
+                accept_order.setVisibility(View.GONE);
+            }
+        }
+        else
+        {
+            accept_order.setVisibility(View.GONE);
+            cancel_order.setVisibility(View.GONE);
+        }
+        if(!status.equals("cancelled"))
+        {
+            textview_cancelled_date.setVisibility(View.GONE);
+        }
+        if(status.equals("cancelled"))
+        {
+            textview_placed_date.setVisibility(View.GONE);
+        }
+        if(!status.equals("delivering"))
+        {
+            finish_order.setVisibility(View.GONE);
+        }
+        if(status.equals("delivering"))
+        {
+            if(uid.equals("admin"))
+            {
+                finish_order.setVisibility(View.GONE);
+            }
+        }
 
 
         RecyView_DSShoes_detail_checkout = findViewById(R.id.RecyView_DSShoes_detail_checkout);
@@ -90,8 +132,9 @@ public class detail_checkoutActivity extends AppCompatActivity {
         textview_order_number.setText("Mã đơn hàng: " +order.getOrderId());
         textview_order_date.setText("Thời gian đặt hàng: " +order.getTimePlaced());
         textview_placed_date.setText("Thời gian giao hàng: " +order.getTimeDelivered());
+        textview_cancelled_date.setText("Thời gian hủy hàng: "+ order.getTimeCancelled());
         textview_order_status.setText("Trạng thái giao hàng: " +order.getStatus());
-        textview_order_total.setText("Tổng tiền: " +order.getTotalPrice());
+        textview_order_total.setText("Tổng tiền: $" +order.getTotalPrice());
 
         tvleft_co_item.setOnClickListener(view -> finish());
 
@@ -117,9 +160,65 @@ public class detail_checkoutActivity extends AppCompatActivity {
                             if (error != null) {
                                 // Xử lý khi có lỗi xảy ra
                             } else {
+                                Long timestamp = System.currentTimeMillis(); // Thời điểm đặt hàng
+                                Date date = new Date(timestamp);
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                                String formattedDate = dateFormat.format(date);
+                                ordersRef.child(IDOrder).child("timeCancelled").setValue(formattedDate, new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                        if (error != null) {
+                                            // Xử lý khi có lỗi xảy ra
+                                        } else {
+                                            // Xử lý khi sửa giá trị thuộc tính thành công
+                                            Toast.makeText(detail_checkoutActivity.this, "Hủy thành công!", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                            adapter.notifyDataSetChanged();
+
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+
+                }
+            });
+
+            // No
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+
+                }
+            });
+
+
+            builder.show();
+        });
+        accept_order.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Xác nhận đơn hàng");
+            builder.setMessage("Bạn có chắc xác nhận đơn hàng chứ?");
+
+            // bấm Yes
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    String IDOrder = order.getOrderId();
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference ordersRef = database.getReference("orders");
+
+                    ordersRef.child(IDOrder).child("status").setValue("delivering", new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                            if (error != null) {
+                                // Xử lý khi có lỗi xảy ra
+                            } else {
                                 // Xử lý khi sửa giá trị thuộc tính thành công
-                                Toast.makeText(detail_checkoutActivity.this, "Hủy thành công!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(detail_checkoutActivity.this, "Xác nhận thành công!", Toast.LENGTH_SHORT).show();
+                                finish();
                                 adapter.notifyDataSetChanged();
+
                             }
                         }
                     });
@@ -136,8 +235,63 @@ public class detail_checkoutActivity extends AppCompatActivity {
 
 
             builder.show();
-        });
 
+        });
+        finish_order.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Xác nhận giao hàng!");
+            builder.setMessage("Xác nhận giao hàng thành công");
+
+            // bấm Yes
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    String IDOrder = order.getOrderId();
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference ordersRef = database.getReference("orders");
+
+                    ordersRef.child(IDOrder).child("status").setValue("delivered", new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                            if (error != null) {
+                                // Xử lý khi có lỗi xảy ra
+                            } else {
+                                Long timestamp = System.currentTimeMillis(); // Thời điểm đặt hàng
+                                Date date = new Date(timestamp);
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                                String formattedDate = dateFormat.format(date);
+                                ordersRef.child(IDOrder).child("timeDelivered").setValue(formattedDate, new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                        if (error != null) {
+                                            // Xử lý khi có lỗi xảy ra
+                                        } else {
+                                            // Xử lý khi sửa giá trị thuộc tính thành công
+                                            Toast.makeText(detail_checkoutActivity.this, "Giao hàng thành công!", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                            adapter.notifyDataSetChanged();
+
+                                        }
+                                    }
+                                });
+
+                            }
+                        }
+                    });
+
+
+                }
+            });
+
+            // No
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+
+                }
+            });
+
+
+            builder.show();
+        });
     }
 
 

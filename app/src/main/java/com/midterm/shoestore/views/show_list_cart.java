@@ -143,9 +143,12 @@ public class show_list_cart extends AppCompatActivity {
                         for (DataSnapshot shoeSnapshot : dataSnapshot.child("shoes").getChildren()) {
                             String shoeId = shoeSnapshot.getKey();
                             int quantity = shoeSnapshot.child("quantity").getValue(Integer.class);
-                            shoeQuantities.put(shoeId, quantity);
+                            shoeQuantities.put(shoeId+"_key", quantity);
                         }
-
+//                        ArrayList<Integer> values = new ArrayList<>(shoeQuantities.values());
+//                        ArrayList<String> key = new ArrayList<>(shoeQuantities.keySet());
+//                        Log.e("Key: ", values.toString());
+//                        Log.e("Value: ", key.toString());
                         // Tạo một đối tượng Order
                         String orderId = UUID.randomUUID().toString(); // Tạo một ID ngẫu nhiên cho đơn hàng
                         String status = "pending"; // Trạng thái ban đầu của đơn hàng
@@ -155,7 +158,7 @@ public class show_list_cart extends AppCompatActivity {
                         // Chuyển đổi đối tượng Date thành định dạng ngày tháng năm giờ phút giây
                         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                         String formattedDate = dateFormat.format(date);
-                        Order order = new Order(orderId, userId, status, Integer.toString(total[0]), shoeQuantities, formattedDate, "");
+                        Order order = new Order(orderId, userId, status, Integer.toString(total[0]), shoeQuantities, formattedDate, "", "");
 
                         // Lưu đơn hàng vào Realtime Database
                         DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("orders");

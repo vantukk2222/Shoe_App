@@ -35,7 +35,7 @@ import com.midterm.shoestore.R;
 public class LoginActivity extends AppCompatActivity {
     private EditText email, password;
     private ImageView btn_login;
-    private TextView btn_reg;
+    private TextView btn_reg, txt_forgot_pass;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.txtpass_login);
         btn_login = findViewById(R.id.img_btn_login);
         btn_reg = findViewById(R.id.txt_reg);
+        txt_forgot_pass  = findViewById(R.id.txt_forgot_pass);
         mAuth = FirebaseAuth.getInstance();
         // Kiểm tra đăng nhập trong phương thức onCreate() của Activity đăng nhập
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -73,7 +74,11 @@ public class LoginActivity extends AppCompatActivity {
 //                }
 //            }
 //        });
+        txt_forgot_pass.setOnClickListener(view -> {
+            Intent intent = new Intent(this, changePassword.class);
+            startActivity(intent);
 
+        });
         //Check send data
 //        btn_login.setOnClickListener(view -> {
 //            FirebaseApp.initializeApp(this);
@@ -111,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_login.setOnClickListener(view -> {
             String strEmail = email.getText().toString();
             String strPass = password.getText().toString();
-            if(!strEmail.equals("") && !strPass.equals(""))
+            if(!strEmail.equals("") && !strPass.equals("") && uid.isEmpty())
             {
                 mAuth.signInWithEmailAndPassword(strEmail, strPass).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -127,6 +132,8 @@ public class LoginActivity extends AppCompatActivity {
                         preferences.edit().putString("uid", user.getUid()).apply();
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        finish();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         mDialog.dismiss();
 
@@ -146,6 +153,8 @@ public class LoginActivity extends AppCompatActivity {
                         preferences.edit().putString("uid", "admin").apply();
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        finish();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }
                     else {

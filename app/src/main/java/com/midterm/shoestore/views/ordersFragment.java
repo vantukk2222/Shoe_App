@@ -23,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.midterm.shoestore.R;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import butterknife.BindView;
 
@@ -63,7 +65,6 @@ public class ordersFragment extends Fragment implements OrderItemAdapter.OrderCl
     private String mParam2;
     private List<Order> orderItemList;
     private List<Order> orderItemListFilter;
-    private String status;
 
     private OrderItemAdapter adapter;
 
@@ -90,7 +91,6 @@ public class ordersFragment extends Fragment implements OrderItemAdapter.OrderCl
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-            status = getArguments().getString("MY_STRING");
 
         }
     }
@@ -109,37 +109,91 @@ public class ordersFragment extends Fragment implements OrderItemAdapter.OrderCl
         recyclerView = view.findViewById(R.id.main_orders_RecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
-        adapter = new OrderItemAdapter(getActivity(), orderItemList, this);
 
         //setUpList();
         loadItemFromFirebase();
+        adapter = new OrderItemAdapter(getActivity(), orderItemList, this);
         adapter.setOrderItemList(orderItemList);
         recyclerView.setAdapter(adapter);
 
     }
 
-    private void loadItemFromFirebase() {
+    void loadItemFromFirebase() {
         orderItemList = new ArrayList<>();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String uid = preferences.getString("uid", "");
         DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference("orders");
+        if(!uid.equals("admin")) {
+            Query query = ordersRef.orderByChild("userId").equalTo(uid);
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot orderSnapshot : dataSnapshot.getChildren()) {
+                        String orderId = orderSnapshot.child("orderId").getValue(String.class);
+                        Map<String, Integer> shoeQuantities_key = orderSnapshot.child("shoeQuantities").getValue(new GenericTypeIndicator<Map<String, Integer>>() {});
+                        String status = orderSnapshot.child("status").getValue(String.class);
+                        String timeCancelled = orderSnapshot.child("timeCancelled").getValue(String.class);
+                        String timeDelivered = orderSnapshot.child("timeDelivered").getValue(String.class);
+                        String timePlaced = orderSnapshot.child("timePlaced").getValue(String.class);
+                        String totalPrice = orderSnapshot.child("totalPrice").getValue(String.class);
+                        String userId = orderSnapshot.child("userId").getValue(String.class);
 
-        Query query = ordersRef.orderByChild("userId").equalTo(uid);
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Order order = snapshot.getValue(Order.class);
-                    orderItemList.add(order);
+                        Map<String, Integer> shoeQuantities = new HashMap<>();
+                        for (Map.Entry<String, Integer> entry : shoeQuantities_key.entrySet()) {
+                            String key = entry.getKey();
+                            Integer value = entry.getValue();
+                            String updatedKey = key.replace("_key", "");
+                            shoeQuantities.put(updatedKey, value);
+                        }
+
+                        Order order = new Order(orderId, userId, status, totalPrice, shoeQuantities, timePlaced, timeDelivered, timeCancelled);
+                        orderItemList.add(order);
+                    }
+
+                    // sử dụng orderList ở đây
                 }
-                // sử dụng orderList ở đây
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // xử lý khi có lỗi
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // xử lý khi có lỗi
+                }
+            });
+        }
+        else
+        {
+            ordersRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot orderSnapshot : dataSnapshot.getChildren()) {
+                        String orderId = orderSnapshot.child("orderId").getValue(String.class);
+                        Map<String, Integer> shoeQuantities_key = orderSnapshot.child("shoeQuantities").getValue(new GenericTypeIndicator<Map<String, Integer>>() {});
+                        String status = orderSnapshot.child("status").getValue(String.class);
+                        String timeCancelled = orderSnapshot.child("timeCancelled").getValue(String.class);
+                        String timeDelivered = orderSnapshot.child("timeDelivered").getValue(String.class);
+                        String timePlaced = orderSnapshot.child("timePlaced").getValue(String.class);
+                        String totalPrice = orderSnapshot.child("totalPrice").getValue(String.class);
+                        String userId = orderSnapshot.child("userId").getValue(String.class);
+
+                        Map<String, Integer> shoeQuantities = new HashMap<>();
+                        for (Map.Entry<String, Integer> entry : shoeQuantities_key.entrySet()) {
+                            String key = entry.getKey();
+                            Integer value = entry.getValue();
+                            String updatedKey = key.replace("_key", "");
+                            shoeQuantities.put(updatedKey, value);
+                        }
+
+                        Order order = new Order(orderId, userId, status, totalPrice, shoeQuantities, timePlaced, timeDelivered, timeCancelled);
+                        orderItemList.add(order);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
 
 
     }
@@ -157,7 +211,7 @@ public class ordersFragment extends Fragment implements OrderItemAdapter.OrderCl
         updateItemList();
     }
 
-    private void updateItemList() {
+    public void updateItemList() {
         if (searchQuery.isEmpty()) {
             // Nếu không có từ khóa tìm kiếm, hiển thị toàn bộ danh sách
             orderItemList = orderItemListFilter;
@@ -169,7 +223,7 @@ public class ordersFragment extends Fragment implements OrderItemAdapter.OrderCl
         recyclerView.setAdapter(adapter);
     }
 
-    private List<Order> filterItemListByKeyword(List<Order> originalList, String keyword) {
+    public List<Order> filterItemListByKeyword(List<Order> originalList, String keyword) {
         List<Order> filteredList = new ArrayList<>();
         for (Order item : originalList) {
             if (item.getStatus().toLowerCase().contains(keyword.toLowerCase())) {
@@ -182,7 +236,7 @@ public class ordersFragment extends Fragment implements OrderItemAdapter.OrderCl
     @Override
     public void onOrderItemLoadSuccess(List<Order> ordersItemList) {
         this.orderItemList = ordersItemList;
-        OrderItemAdapter orderItemAdapter = new OrderItemAdapter(getActivity(), orderItemList, this);
+        OrderItemAdapter orderItemAdapter = new OrderItemAdapter(getActivity(), ordersItemList,this);
         recyclerView.setAdapter(orderItemAdapter);
     }
 

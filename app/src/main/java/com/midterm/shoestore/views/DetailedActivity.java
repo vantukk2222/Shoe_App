@@ -114,7 +114,7 @@ public class DetailedActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.e("Add_to_cart", "Thêm giày mới OK");
-                                    Toast.makeText(DetailedActivity.this, "Đã thêm giày vào giỏ hàng !", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(DetailedActivity.this, "Đã thêm giày mới vào giỏ hàng !", Toast.LENGTH_SHORT).show();
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {

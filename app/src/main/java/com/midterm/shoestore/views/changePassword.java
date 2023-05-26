@@ -22,64 +22,53 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.midterm.shoestore.R;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class changePassword extends AppCompatActivity {
-    private EditText currentPassword, newPassword, retypetPassword;
+    private EditText input_email;
     private Button btnChangePassword;
     private ImageView left_changepass;
+
+    public static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
 
-        currentPassword = findViewById(R.id.currentPassword);
-        newPassword = findViewById(R.id.newPassword);
-        retypetPassword = findViewById(R.id.retypetPassword);
+        input_email = findViewById(R.id.input_email);
 
         btnChangePassword = findViewById(R.id.btnChangePassword);
         left_changepass = findViewById(R.id.left_changepass);
-        String newPass = newPassword.getText().toString().trim();
-        String oldPass = currentPassword.getText().toString().trim();
-        String retypePass = retypetPassword.getText().toString().trim();
-
+        mAuth = FirebaseAuth.getInstance();
         btnChangePassword.setOnClickListener(view -> {
-            if(newPass.length() < 8 || retypePass.length() < 8)
+            boolean isValid = isValidEmail(input_email.getText().toString().trim());
+            if(isValid)
             {
-                newPassword.setError("Mật khẩu phải lớ́n hơn 8");
+                mAuth.sendPasswordResetEmail(input_email.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful())
+                        {
+                            Toast.makeText(getApplicationContext(), "OK send link", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
-            else if(!newPass.equals(retypePass))
+            else
             {
-                newPassword.setError("Mật khẩu mới không giống");
-            }
-            else {
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                FirebaseUser user = mAuth.getCurrentUser();
-                String email = user.getEmail();
-                String password = oldPass;
-                AuthCredential authCredential = EmailAuthProvider.getCredential(email, password);
-                user.reauthenticate(authCredential)
-                        .addOnSuccessListener(unused -> user.updatePassword(newPass)
-                                .addOnSuccessListener(unused1 -> {
-                                    Log.e("Update PW", "OK");
-                                    Toast.makeText(changePassword.this, "Đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
-                                    currentPassword.setText("");
-                                    newPassword.setText("");
-                                    retypetPassword.setText("");
-                                })
-                                .addOnFailureListener(e -> {
-                                    Log.e("Update PW", "Failed dont know");
-                                    Toast.makeText(changePassword.this, "Đổi mật khẩu thất bại!", Toast.LENGTH_SHORT).show();
-
-
-                                }))
-                        .addOnFailureListener(e -> {
-                            Log.e("Update PW", "Failed oldPass ");
-                            Toast.makeText(changePassword.this, "Mật khẩu cũ không đúng", Toast.LENGTH_SHORT).show();
-
-                        });
+                input_email.setError("Require");
             }
         });
         left_changepass.setOnClickListener(view -> finish());
 
+    }
+
+    public static boolean isValidEmail(String email) {
+        Matcher matcher = EMAIL_PATTERN.matcher(email);
+        return matcher.matches();
     }
 }
