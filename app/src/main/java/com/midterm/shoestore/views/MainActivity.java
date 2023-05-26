@@ -1,5 +1,6 @@
 package com.midterm.shoestore.views;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +32,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -38,9 +45,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.midterm.shoestore.R;
+import com.midterm.shoestore.adapter.ShoeItemAdapter;
+import com.midterm.shoestore.model.ShoeItem;
 import com.midterm.shoestore.model.users;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -49,12 +61,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SearchView searchView;
     private Dialog dialog;
     private FloatingActionButton editShoeBtn;
+    private ShoeItemAdapter adapter;
+    private List<ShoeItem> shoeItemList;
+    private ImageButton deleteBtn;
+    private MenuItem menuItem;
+    private boolean isDeleteBtnVisible = false;
+    ShoeItemAdapter.ShoeClickedListeners shoeClickedListeners;
+    HomeFragment homeFragment;
+
+    @BindView(R.id.fragment_container)
+    FrameLayout mainLayout;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
 
         Toolbar toolbar = findViewById(R.id.toolbar); //Ignore red line errors
         setSupportActionBar(toolbar);
@@ -62,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         filterView = findViewById(R.id.filter_home);
         drawerlayout = findViewById(R.id.drawer_layout);
         dialog = new Dialog(this);
-
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String uid = preferences.getString("uid", "");
@@ -76,12 +97,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MenuItem adminItem = menu.findItem(R.id.nav_admin);
         MenuItem cartmanagementItem = menu.findItem(R.id.nav_cart_management);
         editShoeBtn = findViewById(R.id.editShoeBtn);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-
 
         if (uid.equals("admin")) {
             cartItem.setVisible(false);
             checkoutcartItem.setVisible(false);
+            editShoeBtn.setVisibility(View.GONE);
 
         }
         else if(!uid.isEmpty()) {
@@ -157,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
     }
+
 
     private void openbuydialog() {
         dialog.setContentView(R.layout.sort_filter_dialog);
@@ -250,10 +271,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String uid = preferences.getString("uid", "");
+
         if(uid.equals("admin")) {
 
             switch (item.getItemId()) {
                 case R.id.nav_home:
+                    editShoeBtn = findViewById(R.id.editShoeBtn);
+                    editShoeBtn.setVisibility(View.GONE);
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
                     break;
                 case R.id.nav_settings:
@@ -281,7 +305,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.nav_admin:
+                    editShoeBtn = findViewById(R.id.editShoeBtn);
+                    editShoeBtn.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+
                     break;
             }
         }

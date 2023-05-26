@@ -5,13 +5,13 @@ import android.os.Parcelable;
 
 public class ShoeItem implements Parcelable {
 
-    private String shoe_ID;
+    private String shoeID;
     private String shoeName, shoeBrandName;
     private String shoeImage;
     private String shoePrice;
 
-    public ShoeItem(String shoeName, String shoeBrandName, String shoeImage, String shoePrice) {
-        this.shoe_ID = shoe_ID;
+    public ShoeItem(String shoeID, String shoeName, String shoeBrandName, String shoeImage, String shoePrice) {
+        this.shoeID = shoeID;
         this.shoeName = shoeName;
         this.shoeBrandName = shoeBrandName;
         this.shoeImage = shoeImage;
@@ -23,7 +23,7 @@ public class ShoeItem implements Parcelable {
     }
     protected ShoeItem(Parcel in)
     {
-        shoe_ID = in.readString();
+        shoeID = in.readString();
         shoeName = in.readString();
         shoeBrandName = in.readString();
         shoeImage = in.readString();
@@ -42,12 +42,12 @@ public class ShoeItem implements Parcelable {
         }
     };
 
-    public String getShoe_ID() {
-        return shoe_ID;
+    public String getShoeID() {
+        return shoeID;
     }
 
-    public void setShoe_ID(String shoe_ID) {
-        this.shoe_ID = shoe_ID;
+    public void setShoe_ID(String shoeID) {
+        this.shoeID = shoeID;
     }
 
     public String getShoeName() {
@@ -89,7 +89,7 @@ public class ShoeItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(shoe_ID);
+        parcel.writeString(shoeID);
         parcel.writeString(shoeName);
         parcel.writeString(shoeBrandName);
         parcel.writeString(shoeImage);
