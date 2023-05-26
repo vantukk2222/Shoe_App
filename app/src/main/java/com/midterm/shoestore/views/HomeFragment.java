@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -57,12 +58,12 @@ public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClicke
     private String mParam2;
     private List<ShoeItem> shoeItemList;
     private List<ShoeItem> shoeItemListFilter;
+    private MenuItem menuItem;
     private String searchQuery = "";
 
     private ShoeItemAdapter adapter;
 
     ShoeItemLoadListener shoeItemLoadListener;
-
 
     public HomeFragment() {
         // Required empty public constructor
@@ -85,6 +86,7 @@ public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClicke
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -92,6 +94,12 @@ public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClicke
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home2, container, false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
     }
 
     @Override
@@ -121,7 +129,7 @@ public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClicke
                         if(snapshot.exists()){
                             for(DataSnapshot itemSnapshot:snapshot.getChildren()){
                                 ShoeItem shoeItem = itemSnapshot.getValue(ShoeItem.class);
-                                shoeItem.setShoe_ID(itemSnapshot.getKey());
+                                shoeItem.setShoe_ID(shoeItem.getShoeID());
                                 shoeItemList.add(shoeItem);
                             }
                             shoeItemLoadListener.onShoeItemLoadSuccess(shoeItemList);
@@ -162,6 +170,9 @@ public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClicke
         String uid = preferences.getString("uid", "");
         if(uid.equals("admin"))
         {
+            Intent intent = new Intent(getContext(), EditDetailActivity.class);
+            intent.putExtra("shoeItem", shoe);
+            startActivity(intent);
 
         }
         else{
@@ -217,4 +228,6 @@ public class HomeFragment extends Fragment implements ShoeItemAdapter.ShoeClicke
         Snackbar.make(mainLayout, message, Snackbar.LENGTH_LONG).show();
 
     }
+
+
 }

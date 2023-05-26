@@ -80,7 +80,7 @@ public class DetailedActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference cartRef = database.getReference("cart");
         String userId = uid; // id của user tương ứng
-        String shoeId = shoe.getShoe_ID(); // id của shoe cần thêm vào cart
+        String shoeId = shoe.getShoeID(); // id của shoe cần thêm vào cart
         int quantityToAdd  = 1; // số lượng của shoe cần thêm
 
         cartRef.child(userId).child("shoes").child(shoeId).addListenerForSingleValueEvent(new ValueEventListener() {
