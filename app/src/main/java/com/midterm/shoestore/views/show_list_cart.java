@@ -155,7 +155,7 @@ public class show_list_cart extends AppCompatActivity {
                         // Chuyển đổi đối tượng Date thành định dạng ngày tháng năm giờ phút giây
                         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                         String formattedDate = dateFormat.format(date);
-                        Order order = new Order(orderId, userId, status, Integer.toString(total[0]), shoeQuantities, formattedDate, "");
+                        Order order = new Order(orderId, userId, status, Integer.toString(total[0]), shoeQuantities, formattedDate, "", "");
 
                         // Lưu đơn hàng vào Realtime Database
                         DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("orders");

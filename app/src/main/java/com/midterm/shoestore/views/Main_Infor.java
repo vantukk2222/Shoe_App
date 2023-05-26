@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class Main_Infor extends AppCompatActivity {
     private TextView txt_change_pass_st, tvleftinfor_st, txtName_st, txtMail_st, txtDoB_st, txtGender_st, txtPhoneNumber_st, btn_logout_settings;
-    private LinearLayout layout_to_check_cart_st, layout_to_check_shoes_st, layout_to_edit_profile, layout_to_cart_profile, layout_to_checkout_st, layout_to_changePW_st;
+    private LinearLayout  layout_to_edit_profile, layout_to_cart_profile, layout_to_checkout_st, layout_to_changePW_st;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +47,6 @@ public class Main_Infor extends AppCompatActivity {
         layout_to_cart_profile = findViewById(R.id.layout_to_cart_profile);
         layout_to_checkout_st = findViewById(R.id.layout_to_checkout_st);
         layout_to_changePW_st = findViewById(R.id.layout_to_changePW_st);
-        layout_to_check_shoes_st = findViewById(R.id.layout_to_check_shoes_st);
-        layout_to_check_cart_st = findViewById(R.id.layout_to_check_cart_st);
 
 
         btn_logout_settings = findViewById(R.id.btn_logout_settings);
@@ -68,11 +66,7 @@ public class Main_Infor extends AppCompatActivity {
             layout_to_cart_profile.setVisibility(View.GONE);
             layout_to_checkout_st.setVisibility(View.GONE);
         }
-        else
-        {
-            layout_to_check_cart_st.setVisibility(View.GONE);
-            layout_to_check_shoes_st.setVisibility(View.GONE);
-        }
+
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -134,15 +128,6 @@ public class Main_Infor extends AppCompatActivity {
             startActivity(intent);
         });
 
-        //Quản lý giày Admin
-        layout_to_check_shoes_st.setOnClickListener(view ->{
-            Toast.makeText(this, "Giày: In progress", Toast.LENGTH_SHORT).show();
-        });
-
-        //Quản lý đơn hàng Admin
-        layout_to_check_cart_st.setOnClickListener(view ->{
-            Toast.makeText(this, "Đơn hàng: In progress", Toast.LENGTH_SHORT).show();
-        });
 
 
 

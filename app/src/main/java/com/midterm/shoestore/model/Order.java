@@ -13,11 +13,13 @@ public class Order implements Parcelable {
     private String status;
     private String timeDelivered;
     private String timePlaced;
+    private String timeCancelled;
     private String totalPrice;
     private String userId;
 
 
-    public Order(String orderId, String userId, String status, String totalPrice, Map<String, Integer> shoeQuantities, String timestamp, String timeDelivered) {
+
+    public Order(String orderId, String userId, String status, String totalPrice, Map<String, Integer> shoeQuantities, String timestamp, String timeDelivered, String timeCancelled) {
         this.orderId = orderId;
         this.userId = userId;
         this.status = status;
@@ -25,6 +27,7 @@ public class Order implements Parcelable {
         this.shoeQuantities = shoeQuantities;
         this.timePlaced = timestamp;
         this.timeDelivered = timeDelivered;
+        this.timeCancelled = timeCancelled;
     }
     public Order()
     {
@@ -38,6 +41,7 @@ public class Order implements Parcelable {
         totalPrice = in.readString();
         timePlaced = in.readString();
         timeDelivered = in.readString();
+        timeCancelled = in.readString();
     }
 
     public static final Creator<Order> CREATOR = new Creator<Order>() {
@@ -107,6 +111,13 @@ public class Order implements Parcelable {
     public void setTimeDelivered(String timeDelivered) {
         this.timeDelivered = timeDelivered;
     }
+    public String getTimeCancelled() {
+        return timeCancelled;
+    }
+
+    public void setTimeCancelled(String timeCancelled) {
+        this.timeCancelled = timeCancelled;
+    }
 
     @Override
     public int describeContents() {
@@ -121,6 +132,7 @@ public class Order implements Parcelable {
         parcel.writeString(totalPrice);
         parcel.writeString(timePlaced);
         parcel.writeString(timeDelivered);
+        parcel.writeString(timeCancelled);
     }
 
     @Override
@@ -130,6 +142,7 @@ public class Order implements Parcelable {
                 ", shoeQuantities=" + shoeQuantities +
                 ", status='" + status + '\'' +
                 ", timeDelivered='" + timeDelivered + '\'' +
+                ", timeCancelled='" + timeCancelled + '\'' +
                 ", timePlaced='" + timePlaced + '\'' +
                 ", totalPrice='" + totalPrice + '\'' +
                 ", userId='" + userId + '\'' +

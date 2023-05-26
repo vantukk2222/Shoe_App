@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         filterView = findViewById(R.id.filter_home);
         drawerlayout = findViewById(R.id.drawer_layout);
         dialog = new Dialog(this);
-
+        filterView.setVisibility(View.GONE);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String uid = preferences.getString("uid", "");
 
@@ -310,6 +310,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
 
                     break;
+                case R.id.nav_cart_management:
+                    Intent intent_check_cart = new Intent(getApplicationContext(), Checkout_Activity.class);
+                    startActivity(intent_check_cart);
+                    break;
             }
         }
         else if(!uid.isEmpty()) {
@@ -326,8 +330,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShareFragment()).commit();
                     break;
                 case R.id.nav_checkout_cart:
-
-                    Toast.makeText(this, "Giỏ hàng: In progress", Toast.LENGTH_SHORT).show();
                     Intent intent_check_cart = new Intent(getApplicationContext(), Checkout_Activity.class);
                     startActivity(intent_check_cart);
                     break;

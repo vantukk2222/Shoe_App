@@ -63,7 +63,6 @@ public class ordersFragment extends Fragment implements OrderItemAdapter.OrderCl
     private String mParam2;
     private List<Order> orderItemList;
     private List<Order> orderItemListFilter;
-    private String status;
 
     private OrderItemAdapter adapter;
 
@@ -90,7 +89,6 @@ public class ordersFragment extends Fragment implements OrderItemAdapter.OrderCl
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-            status = getArguments().getString("MY_STRING");
 
         }
     }
@@ -123,23 +121,43 @@ public class ordersFragment extends Fragment implements OrderItemAdapter.OrderCl
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String uid = preferences.getString("uid", "");
         DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference("orders");
+        if(!uid.equals("admin")) {
+            Query query = ordersRef.orderByChild("userId").equalTo(uid);
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Order order = snapshot.getValue(Order.class);
+                        orderItemList.add(order);
+                    }
 
-        Query query = ordersRef.orderByChild("userId").equalTo(uid);
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Order order = snapshot.getValue(Order.class);
-                    orderItemList.add(order);
+                    // sử dụng orderList ở đây
                 }
-                // sử dụng orderList ở đây
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // xử lý khi có lỗi
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // xử lý khi có lỗi
+                }
+            });
+        }
+        else
+        {
+            ordersRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Order order = snapshot.getValue(Order.class);
+                        orderItemList.add(order);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
 
 
     }
@@ -182,7 +200,7 @@ public class ordersFragment extends Fragment implements OrderItemAdapter.OrderCl
     @Override
     public void onOrderItemLoadSuccess(List<Order> ordersItemList) {
         this.orderItemList = ordersItemList;
-        OrderItemAdapter orderItemAdapter = new OrderItemAdapter(getActivity(), orderItemList, this);
+        OrderItemAdapter orderItemAdapter = new OrderItemAdapter(getActivity(), ordersItemList,this);
         recyclerView.setAdapter(orderItemAdapter);
     }
 

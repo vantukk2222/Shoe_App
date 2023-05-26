@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -44,6 +45,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.5.3'
     implementation 'com.google.firebase:firebase-auth:21.3.0'
     implementation 'com.google.firebase:firebase-database:20.2.0'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
     def room_version = "2.4.2"
 
     implementation "androidx.room:room-runtime:$room_version"

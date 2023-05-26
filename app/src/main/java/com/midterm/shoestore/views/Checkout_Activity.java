@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -29,7 +31,8 @@ public class Checkout_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
-
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String uid = preferences.getString("uid", "");
         tvleft_co = findViewById(R.id.tvleft_co);
         imgcheckcart_co = findViewById(R.id.imgcheckcart_co);
         ChoXacNhan = findViewById(R.id.ChoXacNhan);
@@ -59,30 +62,62 @@ public class Checkout_Activity extends AppCompatActivity {
                 // Xử lý sự kiện khi người dùng thay đổi lựa chọn
                 RadioButton selectedRadioButton = findViewById(checkedId);
                 String selectedText = selectedRadioButton.getText().toString();
+
                 if(selectedText.equals(getResources().getString(R.string.delivering)))
                 {
-                    status[0] = "delivering";
+                    if(uid.equals("admin"))
+                    {
+                        status[0] = "delivering";
+                    }
+                    else
+                    {
+                        status[0] = "delivering";
+                    }
                     ordersFragment ordersFragments = (ordersFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container_orders);
                     ordersFragments.onSearchQueryChanged(status[0]);
                 }
                 if(selectedText.equals(getResources().getString(R.string.pending)))
                 {
-                    status[0] = "pending";
+                    if(uid.equals("admin"))
+                    {
+                        status[0] = "pending";
+                    }
+                    else
+                    {
+                        status[0] = "pending";
+                    }
                     ordersFragment ordersFragments = (ordersFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container_orders);
                     ordersFragments.onSearchQueryChanged(status[0]);
                 }
                 if(selectedText.equals(getResources().getString(R.string.cancelled)))
                 {
-                    status[0] = "cancelled";
+                    if(uid.equals("admin"))
+                    {
+                        status[0] = "cancelled";
+                    }
+                    else
+                    {
+                        status[0] = "cancelled";
+                    }
                     ordersFragment ordersFragments = (ordersFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container_orders);
                     ordersFragments.onSearchQueryChanged(status[0]);
                 }
                 if(selectedText.equals(getResources().getString(R.string.delivered)))
                 {
-                    status[0] = "delivered";
+                    if(uid.equals("admin"))
+                    {
+                        status[0] = "delivered";
+                    }
+                    else
+                    {
+                        status[0] = "delivered";
+                    }
                     ordersFragment ordersFragments = (ordersFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container_orders);
                     ordersFragments.onSearchQueryChanged(status[0]);
                 }
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                preferences.edit().putString("status", status[0]).apply();
+
             }
         });
 
